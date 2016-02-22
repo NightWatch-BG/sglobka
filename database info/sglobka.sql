@@ -195,13 +195,29 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sglobka`.`parameter_name`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sglobka`.`parameter_name` (
+  `parameter_name_id` INT NOT NULL AUTO_INCREMENT,
+  `parameter_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`parameter_name_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sglobka`.`parameter`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sglobka`.`parameter` (
   `parameter_id` INT NOT NULL AUTO_INCREMENT,
-  `parameter_name` VARCHAR(45) NOT NULL,
+  `parameter_name_id` INT NOT NULL,
   `parameter_value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`parameter_id`))
+  PRIMARY KEY (`parameter_id`),
+  INDEX `paparameter_parameter_name_idx` (`parameter_name_id` ASC),
+  CONSTRAINT `paparameter_parameter_name`
+    FOREIGN KEY (`parameter_name_id`)
+    REFERENCES `sglobka`.`parameter_name` (`parameter_name_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
