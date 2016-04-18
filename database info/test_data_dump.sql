@@ -4,7 +4,7 @@ VALUES
 ('Bulgaria');
 
 INSERT INTO 
-`sglobka`.`city` (`city`, `country_id`) 
+`sglobka`.`city` (`city`, `country_fk`) 
 VALUES 
 ('Sofia','1'),
 ('Plovdiv','1'),
@@ -267,7 +267,7 @@ VALUES
 ('Watts');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('1','AM1'),
 ('1','AM3'),
@@ -304,7 +304,7 @@ VALUES
 ('2','18');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('3','AT'),
 ('3','ATX'),
@@ -445,7 +445,7 @@ VALUES
 ('6','1024 GB');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('7','DDR-333'),
 ('7','DDR-400'),
@@ -531,7 +531,7 @@ VALUES
 ('9','128GB (8x16GB)');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('10','8GB'),
 ('10','16GB'),
@@ -608,7 +608,7 @@ VALUES
 ('13','PCI-E');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('14','FireGL V7300'),
 ('14','FirePro 2270'),
@@ -866,7 +866,7 @@ VALUES
 ('23','3');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('24','ATX Desktop'),
 ('24','ATX Full Tower'),
@@ -883,7 +883,7 @@ VALUES
 ('24','Mini ITX Tower');
 
 INSERT INTO
-`sglobka`.`parameter` (`parameter_name_id`,`parameter_value`) 
+`sglobka`.`parameter` (`parameter_name_fk`,`parameter_value`) 
 VALUES
 ('25','ATX'),
 ('25','ATX/BTX'),
