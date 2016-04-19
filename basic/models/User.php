@@ -162,13 +162,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @return int|string current user ID
      */  
     public function getId() {
-	return $this->getPrimaryKey();	
+	return $this->getPrimaryKey();
     }
 
     /**
      * @param string $authKey
      * @return boolean if auth key is valid for current user
-     */     
+     */
     public function validateAuthKey($authKey) {
 	return $this->getAuthKey() === $authKey;
     }
@@ -178,7 +178,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      *
      * @param string|integer $id the ID to be looked for
      * @return IdentityInterface|null the identity object that matches the given ID.
-     */    
+     */
     public static function findIdentity($id) {
 	return static::findOne(['user_id' => $id]);
     }
@@ -188,19 +188,32 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      *
      * @param string $token the token to be looked for
      * @return IdentityInterface|null the identity object that matches the given token.
-     */    
+     */
     public static function findIdentityByAccessToken($token, $type = null) {
 	        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
 //**************************************************************************************************************************************************/
+    // Hash password
+    public function hashPassword($password, $salt = NULL) {
+        return strtoupper(hash('sha256', $salt . $password));
+    }
+    
     public function beforeSave($insert)
     {
 	if (parent::beforeSave($insert)) {
-	    // ...custom code here...
+	    //for HASHed password
+	    $this->password = Yii::$app->security->generatePasswordHash($this->password);
 	    
-	    $tempPass = Yii::$app->security->generatePasswordHash($this->password);
-	    $this->password = $tempPass;
+	    // salted HASHed password with personal function
+	    //$this->password = $this->hashPassword($this->hashPassword($this->password), $this->salt);
+	    
+//******************************************************************************/
+	    // NOT WORKING  salted HASHed password
+	    //$tempPass = Yii::$app->security->generatePasswordHash($this->password);
+	    //$saltedTempPass = $this->salt . $tempPass;
+	    //$this->password = Yii::$app->security->generatePasswordHash($saltedTempPass);
+//******************************************************************************/
 	    return true;
 	} else {
 	    return false;
@@ -224,9 +237,22 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
-    {	
+    {
+	//for NON HASHed password
 	//return $password === $this->password;
+	
+	//for HASHed password
         return Yii::$app->security->validatePassword($password, $this->password);
+	
+	// salted HASHed password with personal function
+	//return ($this->password == $this->hashPassword($this->hashPassword($password), $this->salt));
+
+//******************************************************************************/
+	// NOT WORKING salted HASHed password
+	//$tempPass = Yii::$app->security->generatePasswordHash($password);
+	//$saltedTempPass = $this->salt . $tempPass;
+	// Yii::$app->security->validatePassword($saltedTempPass, $this->password);
+//******************************************************************************/
     }
     
-}
+} // END OF THE CLASS
