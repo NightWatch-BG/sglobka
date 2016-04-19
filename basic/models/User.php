@@ -76,6 +76,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
+//**************************************************************************************************************************************************/
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -147,29 +148,64 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->hasOne(UserType::className(), ['user_type_id' => 'user_type_fk']);
     }
-//*************************************************************************************************************************************************
+//**************************************************************************************************************************************************/
+// Implementatiom of the IdentityInterface methods
+//**************************************************************************************************************************************************/
+    /**
+     * @return string current user auth key
+     */
     public function getAuthKey() {
 	return $this->auth_key;
     }
 
+    /**
+     * @return int|string current user ID
+     */  
     public function getId() {
 	return $this->getPrimaryKey();	
     }
 
+    /**
+     * @param string $authKey
+     * @return boolean if auth key is valid for current user
+     */     
     public function validateAuthKey($authKey) {
 	return $this->getAuthKey() === $authKey;
     }
 
+    /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|integer $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
+     */    
     public static function findIdentity($id) {
 	return static::findOne(['user_id' => $id]);
     }
 
+    /**
+     * Finds an identity by the given token.
+     *
+     * @param string $token the token to be looked for
+     * @return IdentityInterface|null the identity object that matches the given token.
+     */    
     public static function findIdentityByAccessToken($token, $type = null) {
 	        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-//*************************************************************************************************************************************************
-
+//**************************************************************************************************************************************************/
+    public function beforeSave($insert)
+    {
+	if (parent::beforeSave($insert)) {
+	    // ...custom code here...
+	    
+	    $tempPass = Yii::$app->security->generatePasswordHash($this->password);
+	    $this->password = $tempPass;
+	    return true;
+	} else {
+	    return false;
+	}
+    }
     /**
      * Finds user by username
      *
@@ -189,8 +225,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {	
-	return $password === $this->password;
-        //return Yii::$app->security->validatePassword($password, $this->password_hash);
+	//return $password === $this->password;
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
     
 }
