@@ -1,4 +1,11 @@
 INSERT INTO
+`sglobka`.`user_type` (`user_type`) 
+VALUES
+('Admin'),
+('Staff'),
+('Client');
+
+INSERT INTO
 `sglobka`.`country` (`country`) 
 VALUES
 ('Bulgaria');

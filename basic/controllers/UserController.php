@@ -5,9 +5,13 @@ namespace app\controllers;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
+ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -32,13 +36,13 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+	$searchModel = new UserSearch();
+	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+	
+	return $this->render('index', [
+	    'searchModel' => $searchModel, 
+	    'dataProvider' => $dataProvider,
+	]);
     }
 
     /**
@@ -61,13 +65,20 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+	
+	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+	   
+            return  ActiveForm::validate($model);
+        }
+	
 	if ($model->load(Yii::$app->request->post())) {
 	    $model->setAttributes(array(
                 'salt' => Yii::$app->security->generateRandomString(),
 		'auth_key' => Yii::$app->security->generateRandomString(),
 		'registration_date' => date("Y-m-d H:i:s"),
                 'last_update' => date("Y-m-d H:i:s"),
+		'user_type_fk' => User::USER_CLIENT,
             ));
 	    if ($model->save()) {
 		return $this->redirect(['view', 'id' => $model->user_id]);
@@ -88,6 +99,11 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+	
+	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);

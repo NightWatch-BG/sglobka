@@ -31,6 +31,9 @@ use Yii;
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    const USER_ADMIN = 1;
+    const USER_STAFF= 2;
+    const USER_CLIENT = 3;
     /**
      * @inheritdoc
      */
@@ -46,12 +49,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['username', 'password'], 'required'],
+	    ['username', 'filter', 'filter' => 'trim'],
             [['registration_date', 'last_update'], 'safe'],
             [['user_type_fk', 'address_fk'], 'integer'],
-            [['username'], 'string', 'max' => 16],
-            [['first_name', 'last_name'], 'string', 'max' => 45],
+            [['username'], 'string', 'min' => 2, 'max' => 16],
+            [['first_name', 'last_name'], 'string', 'min' => 2, 'max' => 45],
             [['password', 'salt', 'auth_key'], 'string', 'max' => 64],
-            [['username'], 'unique'],
+	    ['password', 'string', 'min' => 6],
+            [['username'], 'unique', 'targetAttribute' => ['username'], 'message' => 'This username has already been taken.'],
             [['auth_key'], 'unique']
         ];
     }
@@ -70,7 +75,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'salt' => 'Salt',
             'auth_key' => 'Auth Key',
             'registration_date' => 'Registration Date',
-            'user_type_fk' => 'User Type Fk',
+            'user_type_fk' => 'User Type',
             'address_fk' => 'Address Fk',
             'last_update' => 'Last Update',
         ];
@@ -201,6 +206,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     
     public function beforeSave($insert)
     {
+	$this->validate();
 	if (parent::beforeSave($insert)) {
 	    //for HASHed password
 	    $this->password = Yii::$app->security->generatePasswordHash($this->password);
@@ -227,7 +233,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username]);
+	// Case insensetive username
+        //return static::findOne(['username' => $username]);
+	// Case sensetive username
+	return static::find()->where('BINARY [[username]]=:user_name', ['user_name'=>$username])->one();
     }
 
     /**
@@ -255,4 +264,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 //******************************************************************************/
     }
     
+    public function isAdmin()
+    {
+	if ($this->user_type_fk === User::USER_ADMIN) {
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+    public function isStaff()
+    {
+	if ($this->user_type_fk === User::USER_STAFF) {
+	    return true;
+	} else {
+	    return false;
+	}
+    }
 } // END OF THE CLASS
