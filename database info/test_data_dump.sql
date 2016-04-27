@@ -8,7 +8,8 @@ VALUES
 INSERT INTO
 `sglobka`.`country` (`country`) 
 VALUES
-('Bulgaria');
+('Bulgaria'),
+('Greece');
 
 INSERT INTO 
 `sglobka`.`city` (`city`, `country_fk`) 

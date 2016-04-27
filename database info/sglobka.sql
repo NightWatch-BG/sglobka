@@ -115,13 +115,20 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`address` (
   `phone` VARCHAR(20) NOT NULL,
   `address` VARCHAR(100) NOT NULL,
   `address2` VARCHAR(100) NULL DEFAULT 'null',
+  `country_fk` INT NOT NULL,
   `city_fk` INT NOT NULL,
   `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`address_id`),
   INDEX `address_city_idx` (`city_fk` ASC),
+  INDEX `address_country_idx` (`country_fk` ASC),
   CONSTRAINT `address_city`
     FOREIGN KEY (`city_fk`)
     REFERENCES `sglobka`.`city` (`city_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `address_country`
+    FOREIGN KEY (`country_fk`)
+    REFERENCES `sglobka`.`country` (`country_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

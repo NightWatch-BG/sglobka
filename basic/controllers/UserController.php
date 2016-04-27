@@ -4,8 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
+use app\models\Address;
 use yii\data\ActiveDataProvider;
- use app\models\UserSearch;
+use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -52,8 +53,11 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+	$modelUser = $this->findModel($id);
+	$modelAddress = Yii::$app->user->identity->getAddressFk()->one();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'modelUser' => $modelUser,
+	    'modelAddress' => $modelAddress,
         ]);
     }
 
@@ -62,16 +66,13 @@ class UserController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new User();
 	
 	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
-	   
             return  ActiveForm::validate($model);
         }
-	
 	if ($model->load(Yii::$app->request->post())) {
 	    $model->setAttributes(array(
                 'salt' => Yii::$app->security->generateRandomString(),
@@ -83,10 +84,8 @@ class UserController extends Controller
 	    if ($model->save()) {
 		return $this->redirect(['view', 'id' => $model->user_id]);
 	    }
-        }else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        } else {
+            return $this->render('create', ['model' => $model,]);
         }
     }
 
@@ -104,13 +103,10 @@ class UserController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('update', ['model' => $model,]);
         }
     }
 
@@ -142,4 +138,4 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
+}// END OF THE CLASS

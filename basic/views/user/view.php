@@ -4,19 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\User */
+/* @var $modelUser app\models\User */
+/* @var $modelAddress app\models\Address */
 
-$this->title = $model->username . ' - Sqlobka User';
+$this->title = $modelUser->username . ' - Sqlobka User';
 //$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'User';
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode('Username: ' . $model->username) ?></h1>
+    <h1><?= Html::encode('Username: ' . $modelUser->username) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->user_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->user_id], [
+        <?= Html::a('Update', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $modelUser->user_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -26,7 +27,7 @@ $this->params['breadcrumbs'][] = 'User';
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
+        'model' => $modelUser,
         'attributes' => [
             //'user_id',
             'username',
@@ -38,9 +39,36 @@ $this->params['breadcrumbs'][] = 'User';
             'registration_date',
 	    'userTypeFk.user_type',
             //'user_type_fk',
-            'address_fk',
             'last_update',
         ],
     ]) ?>
 
+</div>
+
+    <p>
+        <?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
+    </p>
+  
+
+<div class="address-view">
+
+    <?= DetailView::widget([
+        'model' => $modelUser,
+        'attributes' => [
+            //'address_id',
+            'addressFk.email:email',
+            'addressFk.phone',
+	    'addressFk.countryFk.country',
+            'addressFk.cityFk.city',
+            'addressFk.address',
+            'addressFk.address2',
+            'addressFk.last_update',
+        ],
+    ]) ?>
+    
+    <?php
+    /*$this->render('//address/view', [
+            'model' => $modelAddress,
+        ]);
+    */?>
 </div>
