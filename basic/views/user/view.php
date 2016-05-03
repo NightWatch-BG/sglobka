@@ -37,24 +37,20 @@ $this->params['breadcrumbs'][] = 'User';
             //'salt',
             //'auth_key',
             'registration_date',
+            'last_update',
 	    'userTypeFk.user_type',
             //'user_type_fk',
-            'last_update',
         ],
     ]) ?>
 
 </div>
-
-    <p>
-        <?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
-    </p>
-  
-
+<h1><?= Html::encode('Address: ') ?></h1>
 <div class="address-view">
+    <?php if($modelUser->address_fk != NULL): ?>
 
-    <?= DetailView::widget([
-        'model' => $modelUser,
-        'attributes' => [
+        <?= DetailView::widget([
+            'model' => $modelUser,
+            'attributes' => [
             //'address_id',
             'addressFk.email:email',
             'addressFk.phone',
@@ -64,11 +60,14 @@ $this->params['breadcrumbs'][] = 'User';
             'addressFk.address2',
             'addressFk.last_update',
         ],
-    ]) ?>
-    
-    <?php
-    /*$this->render('//address/view', [
-            'model' => $modelAddress,
-        ]);
-    */?>
+        ]) ?>
+    <?php else: ?>
+        <p>
+            <?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
+         </p>
+    <?php endif; ?>
 </div>
+        <p>
+            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelUser->address_fk], ['class' => 'btn btn-primary']) ?>
+         </p>
+

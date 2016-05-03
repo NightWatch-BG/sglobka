@@ -61,6 +61,15 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionNewuserdata($id)
+    {
+	$modelUser = $this->findModel($id);
+        return $this->render('new-user-data', [
+            'modelUser' => $modelUser,
+        ]);
+    }
+    
+    
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -80,9 +89,10 @@ class UserController extends Controller
 		'registration_date' => date("Y-m-d H:i:s"),
                 'last_update' => date("Y-m-d H:i:s"),
 		'user_type_fk' => User::USER_CLIENT,
+                
             ));
 	    if ($model->save()) {
-		return $this->redirect(['view', 'id' => $model->user_id]);
+		return $this->redirect(['newUserData', 'id' => $model->user_id]);
 	    }
         } else {
             return $this->render('create', ['model' => $model,]);

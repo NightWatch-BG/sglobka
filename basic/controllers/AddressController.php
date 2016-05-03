@@ -90,12 +90,16 @@ class AddressController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $countries = ArrayHelper::map(Country::find()->all(), 'country_id', 'country');
+	$cities = ArrayHelper::map( City::find()->all(), 'city_id', 'city');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->address_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'countries' => $countries,
+		'cities' => $cities,
             ]);
         }
     }
