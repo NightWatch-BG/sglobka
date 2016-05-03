@@ -16,9 +16,9 @@ use Yii;
  * @property string $auth_key
  * @property string $registration_date
  * @property integer $user_type_fk
- * @property integer $address_fk
  * @property string $last_update
  *
+ * @property Address[] $addresses 
  * @property Announcement[] $announcements
  * @property BuildGuide[] $buildGuides
  * @property Messages[] $messages
@@ -26,7 +26,6 @@ use Yii;
  * @property Order[] $orders
  * @property Order[] $orders0
  * @property Review[] $reviews
- * @property Address $addressFk
  * @property UserType $userTypeFk
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
@@ -51,7 +50,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['username', 'password'], 'required'],
 	    ['username', 'filter', 'filter' => 'trim'],
             [['registration_date', 'last_update'], 'safe'],
-            [['user_type_fk', 'address_fk'], 'integer'],
+            [['user_type_fk'], 'integer'],
             [['username'], 'string', 'min' => 2, 'max' => 16],
             [['first_name', 'last_name'], 'string', 'min' => 2, 'max' => 45],
             [['password', 'salt', 'auth_key'], 'string', 'max' => 64],
@@ -76,7 +75,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'auth_key' => 'Auth Key',
             'registration_date' => 'Registration Date',
             'user_type_fk' => 'User Type',
-            'address_fk' => 'Address Fk',
             'last_update' => 'Last Update',
         ];
     }
@@ -141,9 +139,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAddressFk()
+    public function getAddresses()
     {
-        return $this->hasOne(Address::className(), ['address_id' => 'address_fk']);
+	return $this->hasMany(Address::className(), ['user_fk' => 'user_id']);
     }
 
     /**

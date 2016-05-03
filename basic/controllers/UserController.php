@@ -53,10 +53,10 @@ class UserController extends Controller
     public function actionView($id)
     {
 	$modelUser = $this->findModel($id);
-	//$modelAddress = Yii::$app->user->identity->getAddressFk()->one();
+	$modelAddress = Yii::$app->user->identity->getAddresses()->one();
         return $this->render('view', [
             'modelUser' => $modelUser,
-	    //'modelAddress' => $modelAddress,
+	    'modelAddress' => $modelAddress,
         ]);
     }
 

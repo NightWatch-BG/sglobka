@@ -63,7 +63,8 @@ VALUES
 ('Harmanli','1'),
 ('Karnobat','1'),
 ('Svilengrad','1'),
-('Panagyurishte','1');
+('Panagyurishte','1'),
+('Athens','2');
 
 INSERT INTO
 `sglobka`.`status` (`status`) 

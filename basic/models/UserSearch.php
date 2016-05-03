@@ -18,7 +18,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['user_id', 'user_type_fk', 'address_fk'], 'integer'],
+            [['user_id', 'user_type_fk'], 'integer'],
             [['username', 'first_name', 'last_name', 'password', 'salt', 'auth_key', 'registration_date', 'last_update'], 'safe'],
         ];
     }
@@ -64,7 +64,6 @@ class UserSearch extends User
             'user_id' => $this->user_id,
             'registration_date' => $this->registration_date,
             'user_type_fk' => $this->user_type_fk,
-            'address_fk' => $this->address_fk,
             'last_update' => $this->last_update,
         ]);
 

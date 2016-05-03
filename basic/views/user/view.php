@@ -46,23 +46,23 @@ $this->params['breadcrumbs'][] = 'User';
 </div>
 <h1><?= Html::encode('Address: ') ?></h1>
 <div class="address-view">
-    <?php if($modelUser->address_fk != NULL): ?>
+    <?php if($modelAddress!= NULL): ?>
 
         <?= DetailView::widget([
-            'model' => $modelUser,
+            'model' => $modelAddress,
             'attributes' => [
             //'address_id',
-            'addressFk.email:email',
-            'addressFk.phone',
-	    'addressFk.countryFk.country',
-            'addressFk.cityFk.city',
-            'addressFk.address',
-            'addressFk.address2',
-            'addressFk.last_update',
+            'email:email',
+            'phone',
+	    'countryFk.country',
+            'cityFk.city',
+            'address',
+            'address2',
+            'last_update',
         ],
         ]) ?>
         <p>
-            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelUser->address_fk], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
         </p>
     <?php else: ?>
         <p>

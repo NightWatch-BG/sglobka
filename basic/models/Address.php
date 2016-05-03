@@ -18,7 +18,7 @@ use Yii;
  *
  * @property City $cityFk
  * @property Country $countryFk
- * @property User[] $users
+ * @property User $userFk
  */
 class Address extends \yii\db\ActiveRecord
 {
@@ -38,7 +38,7 @@ class Address extends \yii\db\ActiveRecord
     {
         return [
             [['email', 'phone', 'address', 'country_fk', 'city_fk'], 'required'],
-            [['country_fk', 'city_fk'], 'integer'],
+            [['user_fk', 'country_fk', 'city_fk'], 'integer'],
             [['last_update'], 'safe'],
             [['email'], 'string', 'max' => 45],
             [['phone'], 'string', 'max' => 20],
@@ -53,6 +53,7 @@ class Address extends \yii\db\ActiveRecord
     {
         return [
             'address_id' => 'Address ID',
+	    'user_fk' => 'User Fk', 
             'email' => 'Email',
             'phone' => 'Phone',
             'address' => 'Address',
@@ -82,9 +83,9 @@ class Address extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsers()
+    public function getUserFk()
     {
-        return $this->hasMany(User::className(), ['address_fk' => 'address_id']);
+        return $this->hasOne(User::className(), ['user_id' => 'user_fk']);
     }
     
 //**************************************************************************************************************************************************/   
@@ -92,7 +93,7 @@ class Address extends \yii\db\ActiveRecord
     {
 	$this->validate();
 	if (parent::beforeSave($insert)) {
-	    
+	    $this->user_fk = Yii::$app->user->identity->id;
 	    $this->last_update = date("Y-m-d H:i:s");
 	    
 	    return true;

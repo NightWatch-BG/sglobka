@@ -18,7 +18,7 @@ class AddressSearch extends Address
     public function rules()
     {
         return [
-            [['address_id', 'country_fk', 'city_fk'], 'integer'],
+            [['address_id', 'user_fk', 'country_fk', 'city_fk'], 'integer'],
             [['email', 'phone', 'address', 'address2', 'last_update'], 'safe'],
         ];
     }
@@ -57,6 +57,7 @@ class AddressSearch extends Address
 
         $query->andFilterWhere([
             'address_id' => $this->address_id,
+	    'user_fk' => $this->user_fk, 
             'country_fk' => $this->country_fk,
             'city_fk' => $this->city_fk,
             'last_update' => $this->last_update,

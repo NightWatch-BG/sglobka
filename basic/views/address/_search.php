@@ -16,6 +16,8 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'address_id') ?>
+    
+    <?= $form->field($model, 'user_fk') ?> 
 
     <?= $form->field($model, 'email') ?>
 

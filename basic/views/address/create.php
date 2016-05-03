@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Address */
 
 $this->title = 'Add Address';
-$this->params['breadcrumbs'][] = ['label' => 'Addresses', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => 'Addresses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

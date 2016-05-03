@@ -80,6 +80,67 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sglobka`.`user_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sglobka`.`user_type` (
+  `user_type_id` INT NOT NULL AUTO_INCREMENT,
+  `user_type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`user_type_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sglobka`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sglobka`.`user` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(16) NOT NULL,
+  `first_name` VARCHAR(45) NULL,
+  `last_name` VARCHAR(45) NULL,
+  `password` VARCHAR(64) NOT NULL,
+  `salt` VARCHAR(64) NOT NULL,
+  `auth_key` VARCHAR(64) NULL,
+  `registration_date` DATETIME NOT NULL,
+  `user_type_fk` INT NULL,
+  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  INDEX `staff_user_type_idx` (`user_type_fk` ASC),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  UNIQUE INDEX `auth_key_UNIQUE` (`auth_key` ASC),
+  CONSTRAINT `user_user_type`
+    FOREIGN KEY (`user_type_fk`)
+    REFERENCES `sglobka`.`user_type` (`user_type_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sglobka`.`review`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sglobka`.`review` (
+  `review_id` INT NOT NULL AUTO_INCREMENT,
+  `user_fk` INT NOT NULL,
+  `part_fk` INT NOT NULL,
+  `review` VARCHAR(300) NULL,
+  `rating` INT NOT NULL,
+  PRIMARY KEY (`review_id`),
+  INDEX `fk_review_part1_idx` (`part_fk` ASC),
+  INDEX `review_customer_user_idx` (`user_fk` ASC),
+  CONSTRAINT `review_user`
+    FOREIGN KEY (`user_fk`)
+    REFERENCES `sglobka`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `review_part`
+    FOREIGN KEY (`part_fk`)
+    REFERENCES `sglobka`.`part` (`part_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sglobka`.`country`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sglobka`.`country` (
@@ -111,6 +172,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sglobka`.`address` (
   `address_id` INT NOT NULL AUTO_INCREMENT,
+  `user_fk` INT NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `phone` VARCHAR(20) NOT NULL,
   `address` VARCHAR(100) NOT NULL,
@@ -121,6 +183,7 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`address` (
   PRIMARY KEY (`address_id`),
   INDEX `address_city_idx` (`city_fk` ASC),
   INDEX `address_country_idx` (`country_fk` ASC),
+  INDEX `address_user_idx` (`user_fk` ASC),
   CONSTRAINT `address_city`
     FOREIGN KEY (`city_fk`)
     REFERENCES `sglobka`.`city` (`city_id`)
@@ -130,74 +193,11 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`address` (
     FOREIGN KEY (`country_fk`)
     REFERENCES `sglobka`.`country` (`country_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sglobka`.`user_type`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sglobka`.`user_type` (
-  `user_type_id` INT NOT NULL AUTO_INCREMENT,
-  `user_type` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`user_type_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sglobka`.`user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sglobka`.`user` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(16) NOT NULL,
-  `first_name` VARCHAR(45) NULL,
-  `last_name` VARCHAR(45) NULL,
-  `password` VARCHAR(64) NOT NULL,
-  `salt` VARCHAR(64) NOT NULL,
-  `auth_key` VARCHAR(64) NULL,
-  `registration_date` DATETIME NOT NULL,
-  `user_type_fk` INT NULL,
-  `address_fk` INT NULL,
-  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`),
-  INDEX `staff_address_idx` (`address_fk` ASC),
-  INDEX `staff_user_type_idx` (`user_type_fk` ASC),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
-  UNIQUE INDEX `auth_key_UNIQUE` (`auth_key` ASC),
-  CONSTRAINT `user_address`
-    FOREIGN KEY (`address_fk`)
-    REFERENCES `sglobka`.`address` (`address_id`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `user_user_type`
-    FOREIGN KEY (`user_type_fk`)
-    REFERENCES `sglobka`.`user_type` (`user_type_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sglobka`.`review`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sglobka`.`review` (
-  `review_id` INT NOT NULL AUTO_INCREMENT,
-  `user_fk` INT NOT NULL,
-  `part_fk` INT NOT NULL,
-  `review` VARCHAR(300) NULL,
-  `rating` INT NOT NULL,
-  PRIMARY KEY (`review_id`),
-  INDEX `fk_review_part1_idx` (`part_fk` ASC),
-  INDEX `review_customer_user_idx` (`user_fk` ASC),
-  CONSTRAINT `review_user`
+  CONSTRAINT `address_user`
     FOREIGN KEY (`user_fk`)
     REFERENCES `sglobka`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `review_part`
-    FOREIGN KEY (`part_fk`)
-    REFERENCES `sglobka`.`part` (`part_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

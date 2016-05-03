@@ -33,8 +33,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'user_type_fk') ?>
 
-    <?php // echo $form->field($model, 'address_fk') ?>
-
     <?php // echo $form->field($model, 'last_update') ?>
 
     <div class="form-group">
