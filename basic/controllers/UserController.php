@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
-use app\models\Address;
 use yii\data\ActiveDataProvider;
 use app\models\UserSearch;
 use yii\web\Controller;
@@ -54,17 +53,17 @@ class UserController extends Controller
     public function actionView($id)
     {
 	$modelUser = $this->findModel($id);
-	$modelAddress = Yii::$app->user->identity->getAddressFk()->one();
+	//$modelAddress = Yii::$app->user->identity->getAddressFk()->one();
         return $this->render('view', [
             'modelUser' => $modelUser,
-	    'modelAddress' => $modelAddress,
+	    //'modelAddress' => $modelAddress,
         ]);
     }
 
-    public function actionNewuserdata($id)
+    public function actionNewUserData($id)
     {
 	$modelUser = $this->findModel($id);
-        return $this->render('new-user-data', [
+        return $this->render('newUserData', [
             'modelUser' => $modelUser,
         ]);
     }
@@ -92,7 +91,7 @@ class UserController extends Controller
                 
             ));
 	    if ($model->save()) {
-		return $this->redirect(['newUserData', 'id' => $model->user_id]);
+		return $this->redirect(['new-user-data', 'id' => $model->user_id]);
 	    }
         } else {
             return $this->render('create', ['model' => $model,]);

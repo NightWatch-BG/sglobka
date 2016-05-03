@@ -1,21 +1,31 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = 'Update User: ' . ' ' . $model->username;
+$this->title = 'Edit User: ' . ' ' . $model->username;
 //$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $model->user_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['view', 'id' => $model->user_id]];
+$this->params['breadcrumbs'][] = 'Edit Info';
 ?>
-<div class="user-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="edit-user-form">
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?php $form = ActiveForm::begin(['enableAjaxValidation' => true]); ?>
+
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = 'User';
     <h1><?= Html::encode('Username: ' . $modelUser->username) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Edit user info', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $modelUser->user_id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -61,13 +61,12 @@ $this->params['breadcrumbs'][] = 'User';
             'addressFk.last_update',
         ],
         ]) ?>
+        <p>
+            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelUser->address_fk], ['class' => 'btn btn-primary']) ?>
+        </p>
     <?php else: ?>
         <p>
             <?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
          </p>
     <?php endif; ?>
 </div>
-        <p>
-            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelUser->address_fk], ['class' => 'btn btn-primary']) ?>
-         </p>
-
