@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use \app\models\Announcement;
 
 class SiteController extends Controller
 {
@@ -50,7 +51,10 @@ class SiteController extends Controller
     public function actionIndex()
     {
 	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
-	    return $this->render('staffIndex');
+	    $lastAnnounsment = Announcement::getNewestAnnounsment();
+	    return $this->render('staffIndex', [
+		'lastAnnounsment' => $lastAnnounsment,
+	    ]);
 	} else {
 	return $this->render('index');    
 	}

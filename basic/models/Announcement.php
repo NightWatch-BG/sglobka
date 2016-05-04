@@ -52,16 +52,15 @@ class Announcement extends \yii\db\ActiveRecord
             'announcement_date' => 'Date',
         ];
     }
-
+//**************************************************************************************************************************************************/
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getUserFk()
     {
         return $this->hasOne(User::className(), ['user_id' => 'user_fk']);
-    }
-    
-    
+    }  
+//**************************************************************************************************************************************************/
     
     public function beforeSave($insert)
     {
@@ -74,4 +73,11 @@ class Announcement extends \yii\db\ActiveRecord
 	}
     }
     
-}
+//**************************************************************************************************************************************************/
+
+    public static function getNewestAnnounsment() {
+	$lastAnnounsment = Announcement::find()->orderBy('announcement_date DESC')->one();
+	return $lastAnnounsment;
+    }
+    
+} // END OF THE CLASS

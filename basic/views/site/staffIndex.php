@@ -17,9 +17,9 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
         <div class="row">
             <div class="col-lg-4">
                 <h2>Newest Announcement</h2>
-
-                <p>Area showing newest Announcement</p>
-		
+		<h4> <?= $lastAnnounsment->title ?> </h4>
+                <p> <?= $lastAnnounsment->announcement ?> </p>
+		<p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
                 <p>
 		    <?= Html::a('Add Announcement', ['/announcement/create'], ['class' => 'btn btn-success']) ?>
 		    <?= Html::a('All Announcement', ['/announcement/index'], ['class' => 'btn btn-default']) ?>

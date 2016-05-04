@@ -12,6 +12,12 @@ use app\models\Announcement;
  */
 class AnnouncementSearch extends Announcement
 {
+    public function attributes()
+    {
+    // add related fields to searchable attributes
+    return array_merge(parent::attributes(), ['userFk.username']);
+    }
+    
     /**
      * @inheritdoc
      */
@@ -19,7 +25,7 @@ class AnnouncementSearch extends Announcement
     {
         return [
             [['announcement_id', 'user_fk'], 'integer'],
-            [['title', 'announcement', 'announcement_date'], 'safe'],
+            [['title', 'announcement', 'announcement_date', 'userFk.username'], 'safe'],
         ];
     }
 
@@ -46,6 +52,11 @@ class AnnouncementSearch extends Announcement
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+	$query->joinWith('userFk AS userFk');
+	$dataProvider->sort->attributes['userFk.username'] = [
+	    'asc' => ['userFk.username' => SORT_ASC],
+	    'desc' => ['userFk.username' => SORT_DESC],
+	];
 
         $this->load($params);
 
@@ -63,6 +74,8 @@ class AnnouncementSearch extends Announcement
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'announcement', $this->announcement]);
+	
+	$query->andFilterWhere(['like', 'userFk.username', $this->getAttribute('userFk.username')]);
 
         return $dataProvider;
     }

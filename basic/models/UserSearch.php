@@ -12,6 +12,11 @@ use app\models\User;
  */
 class UserSearch extends User
 {
+    public function attributes()
+    {
+    // add related fields to searchable attributes
+    return array_merge(parent::attributes(), ['userTypeFk.user_type']);
+    }
     /**
      * @inheritdoc
      */
@@ -19,7 +24,7 @@ class UserSearch extends User
     {
         return [
             [['user_id', 'user_type_fk'], 'integer'],
-            [['username', 'first_name', 'last_name', 'password', 'salt', 'auth_key', 'registration_date', 'last_update'], 'safe'],
+            [['username', 'first_name', 'last_name', 'password', 'salt', 'auth_key', 'registration_date', 'last_update', 'userTypeFk.user_type'], 'safe'],
         ];
     }
 
@@ -73,6 +78,8 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'salt', $this->salt])
             ->andFilterWhere(['like', 'auth_key', $this->auth_key]);
+	
+	$query->andFilterWhere(['like', 'userTypeFk.user_type', $this->getAttribute('userTypeFk.user_type')]);
 
         return $dataProvider;
     }
