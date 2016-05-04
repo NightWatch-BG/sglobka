@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -53,7 +54,7 @@ class UserController extends Controller
     public function actionView($id)
     {
 	$modelUser = $this->findModel($id);
-	$modelAddress = Yii::$app->user->identity->getAddresses()->one();
+	$modelAddress = $modelUser->getAddresses()->one();
         return $this->render('view', [
             'modelUser' => $modelUser,
 	    'modelAddress' => $modelAddress,
@@ -83,6 +84,7 @@ class UserController extends Controller
         }
 	if ($model->load(Yii::$app->request->post())) {
 	    $model->setAttributes(array(
+		'password' => Yii::$app->security->generatePasswordHash($model->password),
                 'salt' => Yii::$app->security->generateRandomString(),
 		'auth_key' => Yii::$app->security->generateRandomString(),
 		'registration_date' => date("Y-m-d H:i:s"),
@@ -107,7 +109,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-	
+	$userTypes = ArrayHelper::map(\app\models\UserType::find()->all(), 'user_type_id', 'user_type');
 	if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -115,7 +117,10 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->user_id]);
         } else {
-            return $this->render('update', ['model' => $model,]);
+            return $this->render('update', [
+		'model' => $model,
+		'userTypes' => $userTypes,
+		]);
         }
     }
 

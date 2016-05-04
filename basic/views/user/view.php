@@ -16,14 +16,16 @@ $this->params['breadcrumbs'][] = 'User';
     <h1><?= Html::encode('Username: ' . $modelUser->username) ?></h1>
 
     <p>
-        <?= Html::a('Edit user info', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $modelUser->user_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+	<?php if($modelUser->id === Yii::$app->user->identity->id): ?>
+	    <?= Html::a('Edit user info', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
+	    <?= Html::a('Delete', ['delete', 'id' => $modelUser->user_id], [
+		'class' => 'btn btn-danger',
+	        'data' => [
+		    'confirm' => 'Are you sure you want to delete this item?',
+	            'method' => 'post',
+		],
+	    ]) ?>
+	<?php endif; ?>
     </p>
 
     <?= DetailView::widget([
@@ -61,12 +63,18 @@ $this->params['breadcrumbs'][] = 'User';
             'last_update',
         ],
         ]) ?>
-        <p>
-            <?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
-        </p>
+	<?php if($modelUser->id === Yii::$app->user->identity->id): ?>
+	    <p>
+		<?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
+	    </p>
+	<?php endif; ?>
     <?php else: ?>
-        <p>
-            <?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
-         </p>
+	<?php if($modelUser->id === Yii::$app->user->identity->id): ?>
+	    <p>
+		<?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
+	    </p>
+	<?php else: ?>
+	    <p><?= Html::encode('No address data') ?></p>
+	<?php endif; ?>
     <?php endif; ?>
 </div>

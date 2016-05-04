@@ -201,7 +201,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function hashPassword($password, $salt = NULL) {
         return strtoupper(hash('sha256', $salt . $password));
     }
-    
+    /*
     public function beforeSave($insert)
     {
 	$this->validate();
@@ -212,17 +212,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 	    // salted HASHed password with personal function
 	    //$this->password = $this->hashPassword($this->hashPassword($this->password), $this->salt);
 	    
-//******************************************************************************/
+//******************************************************************************
 	    // NOT WORKING  salted HASHed password
 	    //$tempPass = Yii::$app->security->generatePasswordHash($this->password);
 	    //$saltedTempPass = $this->salt . $tempPass;
 	    //$this->password = Yii::$app->security->generatePasswordHash($saltedTempPass);
-//******************************************************************************/
+//******************************************************************************
 	    return true;
 	} else {
 	    return false;
 	}
     }
+    */
     /**
      * Finds user by username
      *

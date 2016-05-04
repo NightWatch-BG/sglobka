@@ -21,7 +21,12 @@ $this->params['breadcrumbs'][] = 'Edit Info';
     <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
-
+    
+    <?php if(Yii::$app->user->identity->isAdmin()): ?>
+	<p>
+	    <?= $form->field($model, 'user_type_fk')->dropDownList($userTypes, ['prompt' => '--- Select user type ---']) ?>
+	</p>
+    <?php endif; ?>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
