@@ -49,7 +49,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	    return $this->render('staffIndex');
+	} else {
+	return $this->render('index');    
+	}
     }
 
     public function actionLogin()
