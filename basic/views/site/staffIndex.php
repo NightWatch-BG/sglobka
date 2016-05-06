@@ -2,6 +2,7 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use app\models\Role;
 
 $this->title = 'Sglobka - Custom Personal Computer Systems';
 ?>
@@ -15,36 +16,68 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
     <div class="body-content">
 
         <div class="row">
+	    
             <div class="col-lg-4">
                 <h2>Newest Announcement</h2>
-		<h4> <?= $lastAnnounsment->title ?> </h4>
-                <p> <?= $lastAnnounsment->announcement ?> </p>
-		<p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
+		<?php if ($lastAnnounsment): ?>
+		    <h4> <?= $lastAnnounsment->title ?> </h4>
+		    <p> <?= $lastAnnounsment->announcement ?> </p>
+		    <p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
+		<?php else: ?>
+		    <p> <?= Html::encode('No announcements yet') ?> </p>
+		<?php endif; ?>
                 <p>
 		    <?= Html::a('Add Announcement', ['/announcement/create'], ['class' => 'btn btn-success']) ?>
-		    <?= Html::a('All Announcement', ['/announcement/index'], ['class' => 'btn btn-default']) ?>
+		    <?= Html::a('All Announcement', ['/announcement/index'], ['class' => 'btn btn-info']) ?>
 		</p>
             </div>
+	    
             <div class="col-lg-4">
-                <h2>Button image to create a guide</h2>
+                <h2>Parts Manager</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p>
+		    <?= Html::a('Add New CPU', ['/part/create/', 'role' => Role::CPU], ['class' => 'btn btn-success']) ?>
+		    <?= Html::a('Add New Motherboard', ['/part/create/', 'role' => Role::MOTHERBOARD], ['class' => 'btn btn-success']) ?>
+		</p>    
+                <p>
+		    <?= Html::a('Add New Memory', ['/part/create/', 'role' => Role::MEMORY], ['class' => 'btn btn-success']) ?>
+		    <?= Html::a('Add New Storage', ['/part/create/', 'role' => Role::STORAGE], ['class' => 'btn btn-success']) ?>
+		</p>    
+                <p>
+		    <?= Html::a('Add New Video Card', ['/part/create/', 'role' => Role::VIDEO_CARD], ['class' => 'btn btn-success']) ?>
+		    <?= Html::a('Add New Case', ['/part/create/', 'role' => Role::PC_CASE], ['class' => 'btn btn-success']) ?>
+		</p>    
+		<p>
+		    <?= Html::a('Add New PSU', ['/part/create', 'role' => Role::PSU], ['class' => 'btn btn-success']) ?>
+		</p>
+		<p>
+		    <?= Html::a('Add New Part', ['/part/create', 'role' => Role::ANY], ['class' => 'btn btn-warning']) ?>
+		</p>
             </div>
+	    
             <div class="col-lg-4">
-                <h2>Button image to look at build guides</h2>
+                <h2>Parts in Stock</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p>
+		    <?= Html::a('See All CPU', ['/part/create/', 'role' => Role::CPU], ['class' => 'btn btn-info']) ?>
+		    <?= Html::a('See All Motherboard', ['/part/create/', 'role' => Role::MOTHERBOARD], ['class' => 'btn btn-info']) ?>
+		</p>    
+                <p>
+		    <?= Html::a('See All Memory', ['/part/create/', 'role' => Role::MEMORY], ['class' => 'btn btn-info']) ?>
+		    <?= Html::a('See All Storage', ['/part/create/', 'role' => Role::STORAGE], ['class' => 'btn btn-info']) ?>
+		</p>    
+                <p>
+		    <?= Html::a('See All Video Card', ['/part/create/', 'role' => Role::VIDEO_CARD], ['class' => 'btn btn-info']) ?>
+		    <?= Html::a('See All Case', ['/part/create/', 'role' => Role::PC_CASE], ['class' => 'btn btn-info']) ?>
+		</p>    
+		<p>
+		    <?= Html::a('See All PSU', ['/part/create', 'role' => Role::PSU], ['class' => 'btn btn-info']) ?>
+		</p>
+		<p>
+		    <?= Html::a('All Parts', ['/part/index'], ['class' => 'btn btn-info']) ?>
+		</p>
             </div>
+	    
 	    <div class="col-lg-4">
                 <h2>Button image to brows parts</h2>
 

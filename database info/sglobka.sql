@@ -35,32 +35,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sglobka`.`model`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sglobka`.`model` (
-  `model_id` INT NOT NULL AUTO_INCREMENT,
-  `model_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`model_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `sglobka`.`part`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sglobka`.`part` (
   `part_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `part_number` VARCHAR(45) NOT NULL,
-  `model_fk` INT NULL,
+  `model` VARCHAR(45) NULL,
   `manufacturer_fk` INT NOT NULL,
   `role_fk` INT NOT NULL,
-  `overal_rating` INT NULL,
+  `overal_rating` DECIMAL(3,1) NULL DEFAULT 0,
   `more_info` VARCHAR(300) NULL,
-  `price` DECIMAL(10,3) NULL,
+  `price` DECIMAL(10,2) NULL,
   PRIMARY KEY (`part_id`),
   INDEX `part_manufacturer_idx` (`manufacturer_fk` ASC),
   INDEX `part_part_type_idx` (`role_fk` ASC),
-  INDEX `part_model_idx` (`model_fk` ASC),
   CONSTRAINT `part_manufacturer`
     FOREIGN KEY (`manufacturer_fk`)
     REFERENCES `sglobka`.`manufacturer` (`manufacturer_id`)
@@ -69,11 +58,6 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`part` (
   CONSTRAINT `part_role`
     FOREIGN KEY (`role_fk`)
     REFERENCES `sglobka`.`role` (`role_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `part_model`
-    FOREIGN KEY (`model_fk`)
-    REFERENCES `sglobka`.`model` (`model_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

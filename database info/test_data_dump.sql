@@ -235,13 +235,13 @@ VALUES
 INSERT INTO
 `sglobka`.`role` (`role`) 
 VALUES
-('cpu'),
-('motherboard'),
-('memory'),
-('storage'),
-('video card'),
-('case'),
-('psu');
+('CPU'),
+('Motherboard'),
+('Memory'),
+('Storage'),
+('Video card'),
+('Case'),
+('PSU');
 
 INSERT INTO
 `sglobka`.`parameter_name` (`parameter_name`) 
