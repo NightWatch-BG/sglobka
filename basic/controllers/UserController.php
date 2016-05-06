@@ -134,7 +134,7 @@ class UserController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['/site/index']);
     }
 
     /**
@@ -152,4 +152,4 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}// END OF THE CLASS
+}// END OF THE CONTROLLER

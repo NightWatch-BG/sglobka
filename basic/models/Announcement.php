@@ -80,4 +80,4 @@ class Announcement extends \yii\db\ActiveRecord
 	return $lastAnnounsment;
     }
     
-} // END OF THE CLASS
+} // END OF THE MODEL

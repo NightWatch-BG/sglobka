@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "user".
  *
- * @property integer $id
+ * @property integer $user_id
  * @property string $username
  * @property string $first_name
  * @property string $last_name
@@ -279,4 +279,4 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 	    return false;
 	}
     }
-} // END OF THE CLASS
+} // END OF THE MODEL

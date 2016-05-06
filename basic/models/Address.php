@@ -93,7 +93,7 @@ class Address extends \yii\db\ActiveRecord
     {
 	$this->validate();
 	if (parent::beforeSave($insert)) {
-	    $this->user_fk = Yii::$app->user->identity->id;
+	    $this->user_fk = Yii::$app->user->identity->user_id;
 	    $this->last_update = date("Y-m-d H:i:s");
 	    
 	    return true;
@@ -114,4 +114,4 @@ class Address extends \yii\db\ActiveRecord
     }
     
     
-}// END OF THE CLASS
+}// END OF THE MODEL

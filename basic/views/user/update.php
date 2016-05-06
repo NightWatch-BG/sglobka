@@ -15,14 +15,18 @@ $this->params['breadcrumbs'][] = 'Edit Info';
 <div class="edit-user-form">
 
     <?php $form = ActiveForm::begin(['enableAjaxValidation' => true]); ?>
-
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?php if($model->user_id === Yii::$app->user->identity->user_id): ?>
     
-    <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    
+        <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+    
+    <?php endif; ?>
     
     <?php if(Yii::$app->user->identity->isAdmin()): ?>
+	<h3> <?= 'User: ' . $model->username . ' is' ?> </h3>
 	<?= $form->field($model, 'user_type_fk')->dropDownList($userTypes, ['prompt' => '--- Select user type ---']) ?>
     <?php endif; ?>
     <div class="form-group">
