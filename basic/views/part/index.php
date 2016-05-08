@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-	<?= Html::a('Add New Part', ['create', 'role' => Role::ANY], ['class' => 'btn btn-success']) ?>
-    </p>
-
+    <?php if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())): ?>
+	<p>
+	    <?= Html::a('Add New Part', ['create', 'role' => Role::ANY], ['class' => 'btn btn-success']) ?>
+	</p>
+    <?php endif; ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,7 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'overal_rating',
             // 'more_info',
             'price',
-
             ['class' => 'yii\grid\ActionColumn','template' => '{view}'],
         ],
     ]); ?>

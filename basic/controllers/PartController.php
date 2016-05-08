@@ -35,11 +35,14 @@ class PartController extends Controller
      * Lists all Part models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($role_fk)
     {
         $searchModel = new PartSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+	if ($role_fk != Role::ANY) {
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $role_fk);
+	} else {
+	    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+	}
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -65,47 +68,55 @@ class PartController extends Controller
      */
     public function actionCreate($role)
     {
-        $model = new Part();
-	$manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
-	if ($role != Role::ANY) {
-	    $roles = ArrayHelper::map(Role::find()->where(['role_id' => $role])->all(), 'role_id', 'role');
-	} else {
-	    $roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
-	}
-	
-	
+	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	    
+	    $model = new Part();
+	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
+	    if ($role != Role::ANY) {
+		$roles = ArrayHelper::map(Role::find()->where(['role_id' => $role])->all(), 'role_id', 'role');
+	    } else {
+		$roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
+	    }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->part_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-		'manufacturers' => $manufacturers,
-		'roles' => $roles,
-            ]);
+	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		return $this->redirect(['view', 'id' => $model->part_id]);
+	    } else {
+		return $this->render('create', [
+		    'model' => $model,
+		    'manufacturers' => $manufacturers,
+		    'roles' => $roles,
+		]);
+	    }
+	    
+	} else {
+	    throw new \yii\web\HttpException(403, 'STAFF ONLY');
         }
     }
-
     /**
      * Updates an existing Part model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-	$manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
-	$roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
+    public function actionUpdate($id) {
+	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	    
+	    $model = $this->findModel($id);
+	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
+	    $roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->part_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-		'manufacturers' => $manufacturers,
-		'roles' => $roles,
-            ]);
+	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		return $this->redirect(['view', 'id' => $model->part_id]);
+	    } else {
+		return $this->render('update', [
+		    'model' => $model,
+		    'manufacturers' => $manufacturers,
+		    'roles' => $roles,
+		]);
+	    }
+	    
+	} else {
+	    throw new \yii\web\HttpException(403, 'STAFF ONLY');
         }
     }
 
@@ -117,9 +128,14 @@ class PartController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	    
+	    $this->findModel($id)->delete();
+	    return $this->redirect(['index', 'role_fk' => '']);
+	    
+	} else {
+	    throw new \yii\web\HttpException(403, 'STAFF ONLY');
+        }
     }
 
     /**

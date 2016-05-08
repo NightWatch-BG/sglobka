@@ -40,8 +40,8 @@ class Part extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'part_number', 'manufacturer_fk', 'role_fk'], 'required'],
-            [['manufacturer_fk', 'role_fk', 'overal_rating'], 'integer'],
-            [['price'], 'number'],
+            [['manufacturer_fk', 'role_fk'], 'integer'],
+            [['price', 'overal_rating'], 'number'],
             [['name', 'part_number', 'model'], 'string', 'max' => 45],
             [['more_info'], 'string', 'max' => 300]
         ];

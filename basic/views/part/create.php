@@ -12,7 +12,7 @@ if(count($roles) > 1) {
     $this->title = 'Add ' . reset($roles);
 }
 
-$this->params['breadcrumbs'][] = ['label' => 'Parts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Parts', 'url' => ['index', 'role_fk' => '']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="part-create">
