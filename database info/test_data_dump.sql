@@ -248,7 +248,7 @@ INSERT INTO
 VALUES
 ('Socket'),
 ('Cores'),
-('Motherboard Fotm Factor'),
+('Motherboard Form Factor'),
 ('Motherboard Chipset'),
 ('RAM Slots'),
 ('RAM Max'),
@@ -258,7 +258,7 @@ VALUES
 ('Storage Capacity'),
 ('Storage Type'),
 ('Storage Interface'),
-('Storage Fotm Factor'),
+('Storage Form Factor'),
 ('Video Card Chipset'),
 ('VRAM'),
 ('Video Card Interface'),

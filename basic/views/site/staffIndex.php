@@ -50,9 +50,6 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 		<p>
 		    <?= Html::a('Add New PSU', ['/part/create', 'role' => Role::PSU], ['class' => 'btn btn-success']) ?>
 		</p>
-		<p>
-		    <?= Html::a('Add New Part', ['/part/create', 'role' => Role::ANY], ['class' => 'btn btn-warning']) ?>
-		</p>
             </div>
 	    
             <div class="col-lg-4">

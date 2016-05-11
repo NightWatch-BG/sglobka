@@ -6,9 +6,10 @@ use Yii;
 use app\models\Part;
 use app\models\PartSearch;
 
+use yii\helpers\ArrayHelper;
 use app\models\Manufacturer;
 use app\models\Role;
-use yii\helpers\ArrayHelper;
+use app\models\Parameter;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,19 +73,17 @@ class PartController extends Controller
 	    
 	    $model = new Part();
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
-	    if ($role != Role::ANY) {
-		$roles = ArrayHelper::map(Role::find()->where(['role_id' => $role])->all(), 'role_id', 'role');
-	    } else {
-		$roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
-	    }
-
+	    $parametersData = $model->getParametersData($role);
+	    $model->setAttribute('role_fk', $role);
+	    
 	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
 		return $this->redirect(['view', 'id' => $model->part_id]);
 	    } else {
 		return $this->render('create', [
 		    'model' => $model,
 		    'manufacturers' => $manufacturers,
-		    'roles' => $roles,
+		    'role' => $role,
+		    'parametersData' => $parametersData,
 		]);
 	    }
 	    

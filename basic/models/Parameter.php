@@ -43,7 +43,7 @@ class Parameter extends \yii\db\ActiveRecord
     {
         return [
             'parameter_id' => 'Parameter ID',
-            'parameter_name_fk' => 'Parameter Name Fk',
+            'parameter_name_fk' => 'Parameter Name',
             'parameter_value' => 'Parameter Value',
         ];
     }
@@ -62,5 +62,10 @@ class Parameter extends \yii\db\ActiveRecord
     public function getPartParameters()
     {
         return $this->hasMany(PartParameter::className(), ['parameter_fk' => 'parameter_id']);
+    }
+    
+    public function getParts()
+    {
+        return $this->hasMany(Part::className(), ['parameter_fk' => 'parameter_id'])->viaTable('part_parameter', ['part_fk' => 'part_id']);
     }
 }
