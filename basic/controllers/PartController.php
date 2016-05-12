@@ -6,6 +6,7 @@ use Yii;
 use app\models\Part;
 use app\models\PartSearch;
 
+use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use app\models\Manufacturer;
 use app\models\Role;
@@ -57,8 +58,13 @@ class PartController extends Controller
      */
     public function actionView($id)
     {
+	$model = $this->findModel($id);
+	$parameters = new ActiveDataProvider([
+	    'query' => $model->getParameters(),
+	    ]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+	    'parameters' => $parameters
         ]);
     }
 
