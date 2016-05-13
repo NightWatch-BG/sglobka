@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Manufacturer;
 use app\models\Role;
 use app\models\Parameter;
+use app\models\Review;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -62,9 +63,15 @@ class PartController extends Controller
 	$parameters = new ActiveDataProvider([
 	    'query' => $model->getParameters(),
 	    ]);
+	if (!Yii::$app->user->isGuest) {
+	    $userReview = Review::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->one();
+	} else {
+	    $userReview = NULL;
+	}
         return $this->render('view', [
             'model' => $model,
-	    'parameters' => $parameters
+	    'parameters' => $parameters,
+	    'review' => $userReview,
         ]);
     }
 
