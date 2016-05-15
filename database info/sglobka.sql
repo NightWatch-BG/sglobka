@@ -261,7 +261,6 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`build_part` (
   `build_part_id` INT NOT NULL AUTO_INCREMENT,
   `build_guide_fk` INT NOT NULL,
   `part_fk` INT NOT NULL,
-  `quantity` INT NULL DEFAULT 1,
   PRIMARY KEY (`build_part_id`),
   INDEX `build_part_build_idx` (`build_guide_fk` ASC),
   INDEX `build_part_part_idx` (`part_fk` ASC),

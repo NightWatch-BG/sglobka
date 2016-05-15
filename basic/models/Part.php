@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 
 use app\models\Parameter;
+use app\models\BuildGuide;
 
 /**
  * This is the model class for table "part".
@@ -136,6 +137,13 @@ class Part extends \yii\db\ActiveRecord
     public function getBuildParts()
     {
         return $this->hasMany(BuildPart::className(), ['part_fk' => 'part_id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBuilds()
+    {
+        return $this->hasMany(BuildGuide::className(), ['build_guide_id' => 'build_guide_fk'])->viaTable('build_part', ['part_fk' => 'part_id']);
     }
 
     /**

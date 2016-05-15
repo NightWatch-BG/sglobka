@@ -12,6 +12,7 @@ use app\models\Manufacturer;
 use app\models\Role;
 use app\models\Parameter;
 use app\models\Review;
+use \app\models\BuildGuide;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -38,7 +39,7 @@ class PartController extends Controller
      * Lists all Part models.
      * @return mixed
      */
-    public function actionIndex($role_fk)
+    public function actionIndex($role_fk, $build = NULL)
     {
         $searchModel = new PartSearch();
 	if ($role_fk != Role::ANY) {
@@ -49,6 +50,7 @@ class PartController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+	    'build' => $build,
         ]);
     }
 
@@ -57,14 +59,14 @@ class PartController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id, $build = NULL)
     {
 	$model = $this->findModel($id);
 	$parameters = new ActiveDataProvider([
 	    'query' => $model->getParameters(),
 	    ]);
 	if (!Yii::$app->user->isGuest) {
-	    $userReview = Review::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->one();
+	    $userReview = Review::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->andWhere(['part_fk' => $model->part_id])->one();
 	} else {
 	    $userReview = NULL;
 	}
@@ -72,6 +74,7 @@ class PartController extends Controller
             'model' => $model,
 	    'parameters' => $parameters,
 	    'review' => $userReview,
+	    'build' => $build,
         ]);
     }
 
@@ -164,6 +167,15 @@ class PartController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+
+    public function actionLinkPart($build_id, $part_id)
+    {
+	$build = BuildGuide::find()->where(['build_guide_id' => $build_id])->one();
+	$part = Part::find()->where(['part_id' => $part_id])->one();
+	$part->link('builds', $build);
+	return $this->redirect(['/build-guide/view', 'id' => $build_id]);
     }
     
 } // END OF THE CONTROLLER

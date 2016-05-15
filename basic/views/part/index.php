@@ -41,9 +41,19 @@ $this->params['breadcrumbs'][] = $this->title;
 	    'overal_rating',
 	    // 'more_info',
 	    'price',
-	    ['class' => 'yii\grid\ActionColumn', 'template' => '{view}'],
+	    [
+	    'class' => 'yii\grid\ActionColumn',
+	    'template' => '{view}',
+	    'buttons' => [
+                        'view' => function ($url, $model) use ($build) {
+                            $url .= '?build=' . $build; 
+                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url);
+			},],
+	    ],
 	],
     ]);
     ?>
-
+ <?php  
+// echo yii\helpers\Url::to(['part/view', 'id' => 1, 'build' => 3]);
+// var_dump($build); ?>
 </div>

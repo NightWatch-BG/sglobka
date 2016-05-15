@@ -77,4 +77,8 @@ $this->params['breadcrumbs'][] = 'User';
 	    <p><?= Html::encode('No address data') ?></p>
 	<?php endif; ?>
     <?php endif; ?>
+
+    <p>
+	<?= Html::a('See my builds', ['/build-guide/index/'], ['class' => 'btn btn-info']) ?>
+    </p>	    
 </div>

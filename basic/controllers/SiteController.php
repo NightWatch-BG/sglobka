@@ -8,6 +8,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+
+use \app\models\BuildGuide;
 use \app\models\Announcement;
 
 class SiteController extends Controller
@@ -56,7 +58,10 @@ class SiteController extends Controller
 		'lastAnnounsment' => $lastAnnounsment,
 	    ]);
 	} else {
-	return $this->render('index');    
+	    $lastBuildGuide = BuildGuide::getNewestBuildGuide();
+	    return $this->render('index', [
+		'lastBuildGuide' => $lastBuildGuide,
+	    ]);    
 	}
     }
 

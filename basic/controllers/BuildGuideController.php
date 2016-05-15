@@ -3,11 +3,14 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Role;
 use app\models\BuildGuide;
 use app\models\BuildGuideSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use yii\data\ActiveDataProvider;
 
 /**
  * BuildGuideController implements the CRUD actions for BuildGuide model.
@@ -48,8 +51,41 @@ class BuildGuideController extends Controller
      */
     public function actionView($id)
     {
+	$model = $this->findModel($id);
+	$partsData = new ActiveDataProvider([
+	    'query' => $model->getParts(),
+	    'key' => function ($model) {
+		return $model->roleFk->role;
+	    }
+	    ]);
+	foreach ($partsData->models as $part) {
+	    switch ($part['role_fk']) {
+		case Role::CPU:
+		    $parts['CPU'] = $part;
+		    break;
+		case Role::MOTHERBOARD:
+		    $parts['Motherboard'] = $part;
+		    break;
+		case Role::MEMORY:
+		    $parts['Memory'] = $part;
+		    break;
+		case Role::STORAGE:
+		    $parts['Storage'] = $part;
+		    break;
+		case Role::VIDEO_CARD:
+		    $parts['Video card'] = $part;
+		    break;
+		case Role::PC_CASE:
+		    $parts['Case'] = $part;
+		    break;
+		case Role::PSU:
+		    $parts['PSU'] = $part;
+		    break;
+	    }
+	}
         return $this->render('view', [
             'model' => $this->findModel($id),
+	    'parts' => $parts,
         ]);
     }
 
@@ -61,7 +97,7 @@ class BuildGuideController extends Controller
     public function actionCreate()
     {
         $model = new BuildGuide();
-
+	$model->user_fk = Yii::$app->user->identity->user_id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->build_guide_id]);
         } else {

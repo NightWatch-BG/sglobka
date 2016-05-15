@@ -102,6 +102,12 @@ class BuildPartController extends Controller
 
         return $this->redirect(['index']);
     }
+    public function actionDeleteBuildPartLnk($part_id, $build_id, $role_fk)
+    {
+	$buildPartLink = BuildPart::findOne(['part_fk' => $part_id, 'build_guide_fk' => $build_id]);
+	$buildPartLink ->delete();
+        return $this->redirect(['/part/index/', 'role_fk' => $role_fk, 'build' => $build_id]);
+    }
 
     /**
      * Finds the BuildPart model based on its primary key value.

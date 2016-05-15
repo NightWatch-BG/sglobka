@@ -46,7 +46,7 @@ class BuildGuide extends \yii\db\ActiveRecord
     {
         return [
             'build_guide_id' => 'Build Guide ID',
-            'user_fk' => 'User Fk',
+            'user_fk' => 'User',
             'title' => 'Title',
             'guide' => 'Guide',
         ];
@@ -67,6 +67,13 @@ class BuildGuide extends \yii\db\ActiveRecord
     {
         return $this->hasMany(BuildPart::className(), ['build_guide_fk' => 'build_guide_id']);
     }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParts()
+    {
+        return $this->hasMany(Part::className(), ['part_id' => 'part_fk'])->viaTable('build_part', ['build_guide_fk' => 'build_guide_id']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -75,4 +82,12 @@ class BuildGuide extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Order::className(), ['build_fk' => 'build_guide_id']);
     }
+
+//**************************************************************************************************************************************************/
+
+    public static function getNewestBuildGuide() {
+	$lastBuildGuide = BuildGuide::find()->orderBy('build_guide_id DESC')->one();
+	return $lastBuildGuide;
+    }    
+    
 }
