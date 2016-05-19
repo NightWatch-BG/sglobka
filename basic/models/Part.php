@@ -88,6 +88,10 @@ class Part extends \yii\db\ActiveRecord
 	'psuEfficiency_id' => 0,
 	'psuWatts_id' => 0,
 	);
+    
+    public $case_mb_form_factor = [];
+    public $mb_ram_speed = [];
+    
 
     /**
      * @inheritdoc
@@ -108,7 +112,7 @@ class Part extends \yii\db\ActiveRecord
             [['price', 'overal_rating'], 'number'],
             [['name', 'part_number', 'model'], 'string', 'max' => 45],
             [['more_info'], 'string', 'max' => 300],
-	    [['parameter_ids'], 'safe']
+	    [['parameter_ids', 'case_mb_form_factor', 'mb_ram_speed'], 'safe']
         ];
     }
 
@@ -186,27 +190,43 @@ class Part extends \yii\db\ActiveRecord
         return $this->hasMany(Review::className(), ['part_fk' => 'part_id']);
     }
 
+  //**************************************************************************************************************************************************/   
+    public function beforeSave($insert)
+    {
+	$this->validate();
+	if (parent::beforeSave($insert)) {
+	    if ($this->case_mb_form_factor != []) {
+		foreach ($this->case_mb_form_factor as $mbff_id) {
+		    $this->linkParameter($mbff_id, $this->part_id);
+		}
+	    }
+	    if ($this->mb_ram_speed != []) {
+		foreach ($this->mb_ram_speed as $mbram_id) {
+		    $this->linkParameter($mbram_id, $this->part_id);
+		}
+	    }
+	    return true;
+	} else {
+	    return false;
+	}
+    }    
+    
 //**************************************************************************************************************************************************/
     public function afterSave($insert, $changedAttributes) {
 	foreach ($this->parameter_ids as $parameter_id) {
 	    if($parameter_id != 0){
-		$parameter = Parameter::find()->where(['parameter_id' => $parameter_id])->one();
-		$this->link('parameters', $parameter);
+		$this->linkParameter($parameter_id, $this->part_id);
 	    }
-	}	
-	
-//	if ($this->parameter_ids['cpuSocket_id'] != 0) {
-//	    $socket = Parameter::find()->where(['parameter_id' => $this->parameter_ids['cpuSocket_id']])->one();
-//	    $this->link('parameters', $socket);
-//	}
-//	if ($this->parameter_ids['cpuCores_id'] != 0) {
-//	    $cores = Parameter::find()->where(['parameter_id' => $this->parameter_ids['cpuCores_id']])->one();
-//	    $this->link('parameters', $cores);
-//	}
-	
+	}
 	parent::afterSave($insert, $changedAttributes);
     }
-
+    
+    public function linkParameter($parameter_id , $part_id) {
+	$parameter = Parameter::find()->where(['parameter_id' => $parameter_id])->one();
+	if (!(PartParameter::find()->where( [ 'part_fk' => $part_id, 'parameter_fk' => $parameter_id ] )->exists())) {
+	    $this->link('parameters', $parameter);
+	}
+    }
 //**************************************************************************************************************************************************/
     public function getParametersData($role) {
 	$parametersData = [];

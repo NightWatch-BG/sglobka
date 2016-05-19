@@ -118,15 +118,15 @@ class PartController extends Controller
 	    
 	    $model = $this->findModel($id);
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
-	    $roles = ArrayHelper::map(Role::find()->all(), 'role_id', 'role');
-
+	    $parametersData = $model->getParametersData($model->role_fk);
 	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
 		return $this->redirect(['view', 'id' => $model->part_id]);
 	    } else {
 		return $this->render('update', [
 		    'model' => $model,
 		    'manufacturers' => $manufacturers,
-		    'roles' => $roles,
+		    'role' => $model->role_fk,
+		    'parametersData' => $parametersData,
 		]);
 	    }
 	    

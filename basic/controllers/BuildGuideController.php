@@ -58,6 +58,7 @@ class BuildGuideController extends Controller
 		return $model->roleFk->role;
 	    }
 	    ]);
+	$parts = [];
 	foreach ($partsData->models as $part) {
 	    switch ($part['role_fk']) {
 		case Role::CPU:

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?= $form->field($model, 'parameter_ids[mbFormFactor_id]')->radioList($parametersData['mbFormFactor'])->label('Motherboard Form Factor') ?>
+<?= $form->field($model, 'case_mb_form_factor')->checkboxList($parametersData['mbFormFactor'])->label('Motherboard Form Factor') ?>
 
 <?= $form->field($model, 'parameter_ids[caseType_id]')->radioList($parametersData['caseType'])->label('Case Type') ?>
 

@@ -19,5 +19,5 @@ use yii\helpers\Html;
 
 <?= $form->field($model, 'parameter_ids[ramMax_id]')->radioList($parametersData['ramMax'])->label('Maximum Supported Memory') ?>
 
-<?= $form->field($model, 'parameter_ids[ramSpeed_id]')->radioList($parametersData['ramSpeed'])->label('Supported Memory Speeds') ?>
+<?= $form->field($model, 'mb_ram_speed')->checkboxList($parametersData['ramSpeed'])->label('Supported Memory Speeds') ?>
 
