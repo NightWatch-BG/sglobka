@@ -31,36 +31,38 @@ class Part extends \yii\db\ActiveRecord
 {
     const cpuSocket =1;
     const cpuCores = 2;
-    const mbFormFactor = 3;
-    const mbChipset = 4;
-    const ramSlots = 5;
-    const ramMax = 6;
-    const ramSpeed = 7;
-    const ramType = 8;
-    const ramSize = 9;
-    const storageCapacity = 10;
-    const storageType = 11;
-    const storageInterface = 12;
-    const storageFormFactor = 13;
-    const vcChipset = 14;
-    const vcVram = 15;
-    const vcInterface = 16;
-    const vcSliCrossfire = 17;
-    const vcDisplayPorts = 18;
-    const vcMiniDisplayPorts = 19;
-    const vcHdmi = 20;
-    const vcMiniHdmi = 21;
-    const vcDvi = 22;
-    const vcSlotsWidth = 23;
-    const caseType = 24;
-    const psuType = 25;
-    const psuModular = 26;
-    const psuEfficiency = 27;
-    const psuWatts = 28;
+    const cpuSpeed = 3;
+    const mbFormFactor = 4;
+    const mbChipset = 5;
+    const ramSlots = 6;
+    const ramMax = 7;
+    const ramSpeed = 8;
+    const ramType = 9;
+    const ramSize = 10;
+    const storageCapacity = 11;
+    const storageType = 12;
+    const storageInterface = 13;
+    const storageFormFactor = 14;
+    const vcChipset = 15;
+    const vcVram = 16;
+    const vcInterface = 17;
+    const vcSliCrossfire = 18;
+    const vcDisplayPorts = 19;
+    const vcMiniDisplayPorts = 20;
+    const vcHdmi = 21;
+    const vcMiniHdmi = 22;
+    const vcDvi = 23;
+    const vcSlotsWidth = 24;
+    const caseType = 25;
+    const psuType = 26;
+    const psuModular = 27;
+    const psuEfficiency = 28;
+    const psuWatts = 29;
     
     public $parameter_ids = array(
 	'cpuSocket_id' => 0,
 	'cpuCores_id' => 0,
+	'cpuSpeed_id' => 0,
 	'mbFormFactor_id' => 0,
 	'mbChipset_id' => 0,
 	'ramSlots_id' => 0,
@@ -190,32 +192,21 @@ class Part extends \yii\db\ActiveRecord
         return $this->hasMany(Review::className(), ['part_fk' => 'part_id']);
     }
 
-  //**************************************************************************************************************************************************/   
-    public function beforeSave($insert)
-    {
-	$this->validate();
-	if (parent::beforeSave($insert)) {
-	    if ($this->case_mb_form_factor != []) {
-		foreach ($this->case_mb_form_factor as $mbff_id) {
-		    $this->linkParameter($mbff_id, $this->part_id);
-		}
-	    }
-	    if ($this->mb_ram_speed != []) {
-		foreach ($this->mb_ram_speed as $mbram_id) {
-		    $this->linkParameter($mbram_id, $this->part_id);
-		}
-	    }
-	    return true;
-	} else {
-	    return false;
-	}
-    }    
-    
 //**************************************************************************************************************************************************/
     public function afterSave($insert, $changedAttributes) {
 	foreach ($this->parameter_ids as $parameter_id) {
 	    if($parameter_id != 0){
 		$this->linkParameter($parameter_id, $this->part_id);
+	    }
+	}
+	if ($this->mb_ram_speed != []) {
+	    foreach ($this->mb_ram_speed as $mbram_id) {
+		$this->linkParameter($mbram_id, $this->part_id);
+	    }
+	}
+	if ($this->case_mb_form_factor != []) {
+	    foreach ($this->case_mb_form_factor as $mbff_id) {
+		$this->linkParameter($mbff_id, $this->part_id);
 	    }
 	}
 	parent::afterSave($insert, $changedAttributes);
@@ -234,6 +225,7 @@ class Part extends \yii\db\ActiveRecord
 	    case Role::CPU:
 		$parametersData['cpuSockets'] = ArrayHelper::map(Parameter::find()->where(['parameter_name_fk' => Part::cpuSocket])->all(), 'parameter_id', 'parameter_value');
 		$parametersData['cpuCores'] = ArrayHelper::map(Parameter::find()->where(['parameter_name_fk' => Part::cpuCores])->all(), 'parameter_id', 'parameter_value');
+		$parametersData['cpuSpeed'] = ArrayHelper::map(Parameter::find()->where(['parameter_name_fk' => Part::cpuSpeed])->all(), 'parameter_id', 'parameter_value');
 		break;
 	    case Role::MOTHERBOARD:
 		$parametersData['cpuSockets'] = ArrayHelper::map(Parameter::find()->where(['parameter_name_fk' => Part::cpuSocket])->all(), 'parameter_id', 'parameter_value');

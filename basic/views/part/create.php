@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Part */
 
-$this->title = 'Add Part';
+$this->title = 'Add New ' . $role->role;
 
 $this->params['breadcrumbs'][] = ['label' => 'Parts', 'url' => ['index', 'role_fk' => '']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -38,8 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	    7 => '_psu',
 	);
 	echo '<h3>Parameters:</h3>';
-	if (isset($formFields[$role])) {
-	    echo $this->render($formFields[$role], [
+	if (isset($formFields[$role->role_id])) {
+	    echo $this->render($formFields[$role->role_id], [
 		'form' => $form,
 		'model' => $model,
 		'parametersData' => $parametersData,

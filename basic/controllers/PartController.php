@@ -91,14 +91,14 @@ class PartController extends Controller
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
 	    $parametersData = $model->getParametersData($role);
 	    $model->setAttribute('role_fk', $role);
-	    
+	    $partRole = Role::find()->where(['role_id' => $role])->one();
 	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
 		return $this->redirect(['view', 'id' => $model->part_id]);
 	    } else {
 		return $this->render('create', [
 		    'model' => $model,
 		    'manufacturers' => $manufacturers,
-		    'role' => $role,
+		    'role' => $partRole,
 		    'parametersData' => $parametersData,
 		]);
 	    }

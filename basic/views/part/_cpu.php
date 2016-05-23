@@ -11,3 +11,5 @@ use yii\helpers\Html;
 
 <?= $form->field($model, 'parameter_ids[cpuCores_id]')->radioList($parametersData['cpuCores'])->label('CPU Cores') ?>
 
+<?= $form->field($model, 'parameter_ids[cpuSpeed_id]')->radioList($parametersData['cpuSpeed'])->label('CPU Core Speed') ?>
+

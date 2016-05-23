@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<?= $form->field($model, 'parameter_ids[vcChipset_id]')->radioList($parametersData['vcChipset'])->label('Chipset') ?>
+<?= $form->field($model, 'parameter_ids[vcChipset_id]')->dropDownList($parametersData['vcChipset'], ['prompt' => '--- Select Chipset ---'])->label('Chipset') ?>
 
 <?= $form->field($model, 'parameter_ids[vcVram_id]')->radioList($parametersData['vcVram'])->label('VRAM') ?>
 
