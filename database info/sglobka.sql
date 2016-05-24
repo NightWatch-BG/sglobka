@@ -237,6 +237,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `sglobka`.`visibility`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sglobka`.`visibility` (
+  `visibility_id` INT NOT NULL AUTO_INCREMENT,
+  `visibility` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`visibility_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `sglobka`.`build_guide`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sglobka`.`build_guide` (
@@ -244,11 +254,18 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`build_guide` (
   `user_fk` INT NOT NULL,
   `title` VARCHAR(45) NULL,
   `guide` VARCHAR(5000) NULL,
+  `visibility_fk` INT NOT NULL,
   PRIMARY KEY (`build_guide_id`),
   INDEX `build_customer_user_idx` (`user_fk` ASC),
+  INDEX `build_visibility_idx` (`visibility_fk` ASC),
   CONSTRAINT `build_user`
     FOREIGN KEY (`user_fk`)
     REFERENCES `sglobka`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `build_visibility`
+    FOREIGN KEY (`visibility_fk`)
+    REFERENCES `sglobka`.`visibility` (`visibility_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

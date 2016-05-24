@@ -69,11 +69,17 @@ VALUES
 INSERT INTO
 `sglobka`.`status` (`status`) 
 VALUES
-('pending'),
-('received'),
-('in progress'),
-('ready'),
-('shipped');
+('Pending'),
+('Received'),
+('In progress'),
+('Ready'),
+('Shipped');
+
+INSERT INTO
+`sglobka`.`visibility` (`visibility`) 
+VALUES
+('Public'),
+('Private');
 
 INSERT INTO
 `sglobka`.`manufacturer` (`manufacturer_name`) 

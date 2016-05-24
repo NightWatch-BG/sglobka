@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\BuildGuide;
+use app\models\Order;
 
 /**
- * BuildGuideSearch represents the model behind the search form about `app\models\BuildGuide`.
+ * OrderSearch represents the model behind the search form about `app\models\Order`.
  */
-class BuildGuideSearch extends BuildGuide
+class OrderSearch extends Order
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class BuildGuideSearch extends BuildGuide
     public function rules()
     {
         return [
-            [['build_guide_id', 'user_fk', 'visibility_fk'], 'integer'],
-            [['title', 'guide'], 'safe'],
+            [['order_id', 'customer_fk', 'staff_fk', 'build_fk', 'status_fk'], 'integer'],
+            [['notes', 'date_of_order', 'last_update'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class BuildGuideSearch extends BuildGuide
      */
     public function search($params)
     {
-        $query = BuildGuide::find();
+        $query = Order::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,13 +56,16 @@ class BuildGuideSearch extends BuildGuide
         }
 
         $query->andFilterWhere([
-            'build_guide_id' => $this->build_guide_id,
-            'user_fk' => $this->user_fk,
-	    'visibility_fk' => $this->visibility_fk,
+            'order_id' => $this->order_id,
+            'customer_fk' => $this->customer_fk,
+            'staff_fk' => $this->staff_fk,
+            'build_fk' => $this->build_fk,
+            'status_fk' => $this->status_fk,
+            'date_of_order' => $this->date_of_order,
+            'last_update' => $this->last_update,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'guide', $this->guide]);
+        $query->andFilterWhere(['like', 'notes', $this->notes]);
 
         return $dataProvider;
     }

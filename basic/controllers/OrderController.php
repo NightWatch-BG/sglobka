@@ -3,21 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Role;
-use app\models\Visibility;
-use app\models\BuildGuide;
-use app\models\BuildGuideSearch;
+use app\models\Order;
+use app\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
-
 /**
- * BuildGuideController implements the CRUD actions for BuildGuide model.
+ * OrderController implements the CRUD actions for Order model.
  */
-class BuildGuideController extends Controller
+class OrderController extends Controller
 {
     public function behaviors()
     {
@@ -32,12 +27,12 @@ class BuildGuideController extends Controller
     }
 
     /**
-     * Lists all BuildGuide models.
+     * Lists all Order models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BuildGuideSearch();
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,73 +42,37 @@ class BuildGuideController extends Controller
     }
 
     /**
-     * Displays a single BuildGuide model.
+     * Displays a single Order model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-	$model = $this->findModel($id);
-	$partsData = new ActiveDataProvider([
-	    'query' => $model->getParts(),
-	    'key' => function ($model) {
-		return $model->roleFk->role;
-	    }
-	    ]);
-	$parts = [];
-	foreach ($partsData->models as $part) {
-	    switch ($part['role_fk']) {
-		case Role::CPU:
-		    $parts['CPU'] = $part;
-		    break;
-		case Role::MOTHERBOARD:
-		    $parts['Motherboard'] = $part;
-		    break;
-		case Role::MEMORY:
-		    $parts['Memory'] = $part;
-		    break;
-		case Role::STORAGE:
-		    $parts['Storage'] = $part;
-		    break;
-		case Role::VIDEO_CARD:
-		    $parts['Video card'] = $part;
-		    break;
-		case Role::PC_CASE:
-		    $parts['Case'] = $part;
-		    break;
-		case Role::PSU:
-		    $parts['PSU'] = $part;
-		    break;
-	    }
-	}
         return $this->render('view', [
             'model' => $this->findModel($id),
-	    'parts' => $parts,
         ]);
     }
 
     /**
-     * Creates a new BuildGuide model.
+     * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new BuildGuide();
-	$model->user_fk = Yii::$app->user->identity->user_id;
-	$visibility = ArrayHelper::map(Visibility::find()->all(), 'visibility_id', 'visibility');
+        $model = new Order();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->build_guide_id]);
+            return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-		'visibility' => $visibility,
             ]);
         }
     }
 
     /**
-     * Updates an existing BuildGuide model.
+     * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -123,7 +82,7 @@ class BuildGuideController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->build_guide_id]);
+            return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -132,7 +91,7 @@ class BuildGuideController extends Controller
     }
 
     /**
-     * Deletes an existing BuildGuide model.
+     * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -145,15 +104,15 @@ class BuildGuideController extends Controller
     }
 
     /**
-     * Finds the BuildGuide model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return BuildGuide the loaded model
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = BuildGuide::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -11,8 +11,10 @@ use Yii;
  * @property integer $user_fk
  * @property string $title
  * @property string $guide
+ * @property integer $visibility_fk 
  *
  * @property User $userFk
+ * @property Visibility $visibilityFk 
  * @property BuildPart[] $buildParts
  * @property Order[] $orders
  */
@@ -32,8 +34,8 @@ class BuildGuide extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_fk'], 'required'],
-            [['user_fk'], 'integer'],
+            [['user_fk', 'visibility_fk'], 'required'],
+            [['user_fk', 'visibility_fk'], 'integer'],
             [['title'], 'string', 'max' => 45],
             [['guide'], 'string', 'max' => 5000]
         ];
@@ -49,9 +51,11 @@ class BuildGuide extends \yii\db\ActiveRecord
             'user_fk' => 'User',
             'title' => 'Title',
             'guide' => 'Guide',
+	    'visibility_fk' => 'Visibility',
         ];
     }
 
+//**************************************************************************************************************************************************/
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -83,6 +87,13 @@ class BuildGuide extends \yii\db\ActiveRecord
         return $this->hasMany(Order::className(), ['build_fk' => 'build_guide_id']);
     }
 
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getVisibilityFk() 
+    { 
+       return $this->hasOne(Visibility::className(), ['visibility_id' => 'visibility_fk']); 
+    } 
 //**************************************************************************************************************************************************/
 
     public static function getNewestBuildGuide() {
@@ -90,4 +101,4 @@ class BuildGuide extends \yii\db\ActiveRecord
 	return $lastBuildGuide;
     }    
     
-}
+} // END OF THE MODEL
