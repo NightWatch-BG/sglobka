@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'country_fk')->dropDownList($countries, [
 	'prompt' => '--- Select country ---',
 	'onchange' => '
-	$.post("index.php?r=address/lists&id='.'"+$(this).val(), function (data){
+	$.post("lists/'.'"+$(this).val(), function (data){
 	    $( "select#address-city_fk" ).html(data);
 	});'
 	

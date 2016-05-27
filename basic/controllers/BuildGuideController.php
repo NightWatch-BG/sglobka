@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Role;
+use app\models\Address;
 use app\models\Visibility;
 use app\models\BuildGuide;
 use app\models\BuildGuideSearch;
@@ -11,7 +11,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -54,41 +53,16 @@ class BuildGuideController extends Controller
     public function actionView($id)
     {
 	$model = $this->findModel($id);
-	$partsData = new ActiveDataProvider([
-	    'query' => $model->getParts(),
-	    'key' => function ($model) {
-		return $model->roleFk->role;
-	    }
-	    ]);
-	$parts = [];
-	foreach ($partsData->models as $part) {
-	    switch ($part['role_fk']) {
-		case Role::CPU:
-		    $parts['CPU'] = $part;
-		    break;
-		case Role::MOTHERBOARD:
-		    $parts['Motherboard'] = $part;
-		    break;
-		case Role::MEMORY:
-		    $parts['Memory'] = $part;
-		    break;
-		case Role::STORAGE:
-		    $parts['Storage'] = $part;
-		    break;
-		case Role::VIDEO_CARD:
-		    $parts['Video card'] = $part;
-		    break;
-		case Role::PC_CASE:
-		    $parts['Case'] = $part;
-		    break;
-		case Role::PSU:
-		    $parts['PSU'] = $part;
-		    break;
-	    }
+	$parts = $model->getAddedParts();
+	if(Yii::$app->user->isGuest) {
+	    $haveAddress = 0;
+	} else {
+	    $haveAddress = Address::find()->where(['user_fk' => Yii::$app->user->identity->user_id]);
 	}
         return $this->render('view', [
             'model' => $this->findModel($id),
 	    'parts' => $parts,
+	    'haveAddress' => $haveAddress,
         ]);
     }
 

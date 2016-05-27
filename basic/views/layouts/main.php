@@ -48,7 +48,7 @@ AppAsset::register($this);
 	    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
 	    $menuItems[] = ['label' => 'Register', 'url' => ['/user/create']];
 	} else {
-	    $menuItems[] = ['label' => 'Profile', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->id]];
+	    $menuItems[] = ['label' => 'Profile', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->user_id]];
 	    $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],

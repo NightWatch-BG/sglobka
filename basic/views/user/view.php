@@ -63,13 +63,13 @@ $this->params['breadcrumbs'][] = 'User';
             'last_update',
         ],
         ]) ?>
-	<?php if($modelUser->id === Yii::$app->user->identity->id): ?>
+	<?php if($modelUser->id === Yii::$app->user->identity->user_id): ?>
 	    <p>
 		<?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
 	    </p>
 	<?php endif; ?>
     <?php else: ?>
-	<?php if($modelUser->id === Yii::$app->user->identity->id): ?>
+	<?php if($modelUser->id === Yii::$app->user->identity->user_id): ?>
 	    <p>
 		<?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
 	    </p>

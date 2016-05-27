@@ -103,15 +103,4 @@ class Address extends \yii\db\ActiveRecord
     }
     
 //**************************************************************************************************************************************************/    
-    
-    public function getUser($username)
-    {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($username);
-        }
-
-        return $this->_user;
-    }
-    
-    
 }// END OF THE MODEL

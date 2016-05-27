@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-	<?php if($model->user_fk === Yii::$app->user->identity->id): ?>
+	<?php if($model->user_fk === Yii::$app->user->identity->user_id): ?>
 	    <?= Html::a('Update', ['update', 'id' => $model->announcement_id], ['class' => 'btn btn-primary']) ?>
 	    <?= Html::a('Delete', ['delete', 'id' => $model->announcement_id], [
 		'class' => 'btn btn-danger',

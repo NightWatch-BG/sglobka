@@ -69,8 +69,6 @@ class AddressController extends Controller
 	$countries = ArrayHelper::map(Country::find()->all(), 'country_id', 'country');
 	$cities = ArrayHelper::map( City::find()->all(), 'city_id', 'city');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-	    //$user = $model->getUser(Yii::$app->user->identity->username);
-	    //$user->updateAttributes(['address_fk'=>$model->address_id]);
             return $this->redirect(['view', 'id' => $model->address_id]);
         } else {
             return $this->render('create', [
@@ -147,15 +145,6 @@ class AddressController extends Controller
 	    foreach ($cities as $city) {
 		echo "<option value='" .$city->city_id."'>" .$city->city."</option>";
 	    }
-	    
-	    /*
-	    $cities = ArrayHelper::map( City::find()->where(['country_fk' => $id])->all(), 'city_id', 'city');
-	    return $this->render('create', [
-                'model' => $model,
-		'countries' => $countries,
-		'cities' => $cities,
-		]);
-	    */
 	} else {
 	    echo "<option value=0> - </option>";
 	}

@@ -63,7 +63,7 @@ class AnnouncementController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 	    $model->setAttributes(array(
-		'user_fk' => Yii::$app->user->identity->id,
+		'user_fk' => Yii::$app->user->identity->user_id,
 		//'announcement_date' => date("Y-m-d H:i:s"),
 	    ));
 	}

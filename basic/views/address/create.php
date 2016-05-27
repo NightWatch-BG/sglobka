@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 $this->title = 'Add Address';
 //$this->params['breadcrumbs'][] = ['label' => 'Addresses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->id]];
+$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->user_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="address-create">

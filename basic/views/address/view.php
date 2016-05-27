@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 
 $this->title = \Yii::$app->user->identity->username . ' Address';
 //$this->params['breadcrumbs'][] = ['label' => 'Addresses', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->id]];
+$this->params['breadcrumbs'][] = ['label' => 'User', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->user_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="address-view">

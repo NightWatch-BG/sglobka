@@ -147,7 +147,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    
+    <?php if (!empty($parts) && $haveAddress): ?>
+	<?= Html::a('Order this build', ['/site/index/'],['class' => 'btn btn-warning']) ?>	
+    <?php endif; ?>
  <?php    
 //echo GridView::widget(['dataProvider' => $parts,]);
 //var_dump($parts);
