@@ -35,12 +35,16 @@ AppAsset::register($this);
     ]);
     $menuItems = [
 	['label' => 'Home', 'url' => ['/site/index']],
-	['label' => 'Parts', 'url' => ['/part/index', 'role_fk' => '']],
+	['label' => 'Builds', 'url' => ['/build-guide/index', 'visibility_fk' => \app\models\BuildGuide::visibilityPublic]],
+	['label' => 'Parts', 'url' => ['/part/index']],
         /*
 	* ['label' => 'About', 'url' => ['/site/about']],
 	* ['label' => 'Contact', 'url' => ['/site/contact']],
 	*/
 	];
+	if(!Yii::$app->user->isGuest) {
+	    $menuItems[] = ['label' => 'My Builds', 'url' => ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id]];
+	}
 	if(!Yii::$app->user->isGuest && yii::$app->user->identity->isAdmin()) {
 	    $menuItems[] = ['label' => 'All Users', 'url' => ['/user/index']];
 	}

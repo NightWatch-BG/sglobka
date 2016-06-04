@@ -13,15 +13,18 @@ use yii\data\ActiveDataProvider;
  * @property integer $user_fk
  * @property string $title
  * @property string $guide
- * @property integer $visibility_fk 
+ * @property integer $visibility_fk
+ * @property string $last_update
  *
  * @property User $userFk
- * @property Visibility $visibilityFk 
+ * @property Visibility $visibilityFk
  * @property BuildPart[] $buildParts
  * @property Order[] $orders
  */
 class BuildGuide extends \yii\db\ActiveRecord
 {
+    const visibilityPublic =1;
+    const visibilityPrivate = 2;
     /**
      * @inheritdoc
      */
@@ -38,6 +41,7 @@ class BuildGuide extends \yii\db\ActiveRecord
         return [
             [['user_fk', 'visibility_fk'], 'required'],
             [['user_fk', 'visibility_fk'], 'integer'],
+	    [['last_update'], 'safe'], 
             [['title'], 'string', 'max' => 45],
             [['guide'], 'string', 'max' => 5000]
         ];
@@ -54,6 +58,7 @@ class BuildGuide extends \yii\db\ActiveRecord
             'title' => 'Title',
             'guide' => 'Guide',
 	    'visibility_fk' => 'Visibility',
+	    'last_update' => 'Last Update',
         ];
     }
 
@@ -99,9 +104,14 @@ class BuildGuide extends \yii\db\ActiveRecord
 //**************************************************************************************************************************************************/
 
     public static function getNewestBuildGuide() {
-	$lastBuildGuide = BuildGuide::find()->orderBy('build_guide_id DESC')->one();
+	$lastBuildGuide = BuildGuide::find()->where(['visibility_fk' => BuildGuide::visibilityPublic])->orderBy('last_update DESC')->one();
 	return $lastBuildGuide;
-    }    
+    }
+    
+    public static function getMyNewestBuild() {
+	$lastBuildGuide = BuildGuide::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->orderBy('last_update DESC')->one();
+	return $lastBuildGuide;
+    }
     
     public function getAddedParts() {
 	$partsData = new ActiveDataProvider(['query' => $this->getParts(),]);
@@ -125,5 +135,17 @@ class BuildGuide extends \yii\db\ActiveRecord
 	} }
 	return $parts;
     }
-
+    
+    public function beforeSave($insert)
+    {
+	$this->validate();
+	if (parent::beforeSave($insert)) {
+	    $this->last_update = date("Y-m-d H:i:s");
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+    
+//**************************************************************************************************************************************************/
 } // END OF THE MODEL

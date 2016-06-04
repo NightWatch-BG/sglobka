@@ -19,7 +19,7 @@ class BuildGuideSearch extends BuildGuide
     {
         return [
             [['build_guide_id', 'user_fk', 'visibility_fk'], 'integer'],
-            [['title', 'guide'], 'safe'],
+            [['title', 'guide', 'last_update'], 'safe'],
         ];
     }
 
@@ -47,7 +47,7 @@ class BuildGuideSearch extends BuildGuide
             'query' => $query,
         ]);
 
-        $this->load($params);
+        $this->load($params, '');
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -59,6 +59,7 @@ class BuildGuideSearch extends BuildGuide
             'build_guide_id' => $this->build_guide_id,
             'user_fk' => $this->user_fk,
 	    'visibility_fk' => $this->visibility_fk,
+	    'last_update' => $this->last_update,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

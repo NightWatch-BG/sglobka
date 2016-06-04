@@ -255,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`build_guide` (
   `title` VARCHAR(45) NULL,
   `guide` VARCHAR(5000) NULL,
   `visibility_fk` INT NOT NULL,
+  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`build_guide_id`),
   INDEX `build_customer_user_idx` (`user_fk` ASC),
   INDEX `build_visibility_idx` (`visibility_fk` ASC),
@@ -284,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`build_part` (
   CONSTRAINT `build_part_build_guide`
     FOREIGN KEY (`build_guide_fk`)
     REFERENCES `sglobka`.`build_guide` (`build_guide_id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `build_part_part`
     FOREIGN KEY (`part_fk`)
@@ -314,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `sglobka`.`order` (
   `build_fk` INT NOT NULL,
   `status_fk` INT NOT NULL,
   `notes` VARCHAR(5000) NULL,
-  `date_of_order` DATETIME NOT NULL,
+  `date_of_order` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`order_id`),
   INDEX `order_staff_idx` (`staff_fk` ASC),

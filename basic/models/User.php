@@ -265,18 +265,27 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     
     public function isAdmin()
     {
-	if ($this->user_type_fk === User::USER_ADMIN) {
-	    return true;
-	} else {
-	    return false;
-	}
+	return $this->user_type_fk === User::USER_ADMIN;
     }
+    
     public function isStaff()
     {
-	if ($this->user_type_fk === User::USER_STAFF) {
+	if ($this->user_type_fk === User::USER_STAFF || $this->isAdmin()) {
 	    return true;
 	} else {
 	    return false;
 	}
     }
+    
+    public function isCreator($id)
+    {
+	return $this->user_id === $id;
+    }
+    
+    public function haveAddress()
+    {
+	return Address::find()->where(['user_fk' => $this->user_id])->one();
+    }
+    
+//**************************************************************************************************************************************************/    
 } // END OF THE MODEL

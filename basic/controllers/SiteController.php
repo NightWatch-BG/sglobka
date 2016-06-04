@@ -50,18 +50,26 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
-    {
-	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
-	    $lastAnnounsment = Announcement::getNewestAnnounsment();
-	    return $this->render('staffIndex', [
-		'lastAnnounsment' => $lastAnnounsment,
-	    ]);
+    public function actionIndex() {
+	$lastBuildGuide = BuildGuide::getNewestBuildGuide();
+	if (Yii::$app->user->identity) {
+	    if (Yii::$app->user->identity->isStaff()) {
+		$lastAnnounsment = Announcement::getNewestAnnounsment();
+		return $this->render('staffIndex', [
+			    'lastAnnounsment' => $lastAnnounsment,
+		]);
+	    } else {
+		$myBuild = BuildGuide::getMyNewestBuild();
+		return $this->render('index', [
+			    'lastBuildGuide' => $lastBuildGuide,
+			    'myBuild' => $myBuild,
+		]);
+	    }
 	} else {
-	    $lastBuildGuide = BuildGuide::getNewestBuildGuide();
 	    return $this->render('index', [
-		'lastBuildGuide' => $lastBuildGuide,
-	    ]);    
+			'lastBuildGuide' => $lastBuildGuide,
+			'myBuild' => NULL,
+	    ]);
 	}
     }
 

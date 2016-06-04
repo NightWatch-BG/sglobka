@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = 'Edit Info';
 <div class="edit-user-form">
 
     <?php $form = ActiveForm::begin(['enableAjaxValidation' => true]); ?>
-    <?php if($model->user_id === Yii::$app->user->identity->user_id): ?>
+    <?php if(Yii::$app->user->identity->isCreator($model->user_id)): ?>
     
 	<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
     

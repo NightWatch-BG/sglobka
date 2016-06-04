@@ -23,7 +23,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'guide') ?>
     
-    <?= $form->field($model, 'visibility_fk') ?> 
+    <?= $form->field($model, 'visibility_fk') ?>
+		
+    <?php // echo $form->field($model, 'last_update') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

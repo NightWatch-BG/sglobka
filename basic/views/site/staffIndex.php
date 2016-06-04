@@ -2,7 +2,10 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
+
 use app\models\Role;
+use \app\models\BuildGuide;
 
 $this->title = 'Sglobka - Custom Personal Computer Systems';
 ?>
@@ -21,8 +24,24 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
                 <h2>Newest Announcement</h2>
 		<?php if ($lastAnnounsment): ?>
 		    <h4> <?= $lastAnnounsment->title ?> </h4>
-		    <p> <?= $lastAnnounsment->announcement ?> </p>
+		    <p> <?= StringHelper::truncate($lastAnnounsment->announcement, 150, ' .........') ?></p>
+			<?php
+			/*
+			if (strlen($lastAnnounsment->announcement) > 150) {
+			    // truncate string
+			    $stringCut = substr($lastAnnounsment->announcement, 0, 150);
+			    // make sure it ends in a word so assassinate doesn't become ass...
+			    $announcement = substr($stringCut, 0, strrpos($stringCut, ' ')) . ' .........';
+			    echo '<p>' . $announcement . '</p>';
+			} else {
+			    echo '<p>' . $lastAnnounsment->announcement . '</p>';
+			}
+			*/
+			?>
 		    <p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
+		    <p>
+			<?= Html::a('See this announcements', ['announcement/view', 'id' => $lastAnnounsment->announcement_id], ['class' => 'btn btn-info']) ?>
+		    </p>
 		<?php else: ?>
 		    <p> <?= Html::encode('No announcements yet') ?> </p>
 		<?php endif; ?>
@@ -79,13 +98,19 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
                 <h2>Build your custom PC</h2>
 		<?php if (!Yii::$app->user->isGuest): ?>
 		    <p>
-			<?= Html::a('Create a PC Build', ['/build-guide/create/'], ['class' => 'btn btn-success']) ?>
+			<?= Html::a('New PC Build', ['/build-guide/create/'], ['class' => 'btn btn-success']) ?>
+		    </p>
+		    <p>
+			<?= Html::a('My builds', ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
 		    </p>
 		<?php else: ?>
 		    <p>
 			<?= Html::encode('Login to start building!') ?>
 		    </p>
 		<?php endif; ?>
+		<p>
+		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::visibilityPublic], ['class' => 'btn btn-info']) ?>
+		</p>
             </div>
         </div>
 

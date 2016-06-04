@@ -34,12 +34,15 @@ class BuildGuideController extends Controller
      * Lists all BuildGuide models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($user_fk = 0, $visibility_fk = 0)
     {
-        $searchModel = new BuildGuideSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
+	$searchModel = new BuildGuideSearch();
+	if($user_fk) {
+	    $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $user_fk);	    
+	} else {
+	    $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $visibility_fk);
+	}
+	return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -50,20 +53,22 @@ class BuildGuideController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
 	$model = $this->findModel($id);
 	$parts = $model->getAddedParts();
-	if(Yii::$app->user->isGuest) {
-	    $haveAddress = 0;
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isCreator($model->user_fk)) {
+	    $haveAddress = Yii::$app->user->identity->haveAddress();
+	    return $this->render('viewForAuthor', [
+			'model' => $this->findModel($id),
+			'parts' => $parts,
+			'haveAddress' => $haveAddress,
+	    ]);
 	} else {
-	    $haveAddress = Address::find()->where(['user_fk' => Yii::$app->user->identity->user_id]);
+	    return $this->render('view', [
+			'model' => $this->findModel($id),
+			'parts' => $parts,
+	    ]);
 	}
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-	    'parts' => $parts,
-	    'haveAddress' => $haveAddress,
-        ]);
     }
 
     /**
@@ -95,12 +100,13 @@ class BuildGuideController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+	$visibility = ArrayHelper::map(Visibility::find()->all(), 'visibility_id', 'visibility');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->build_guide_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+		'visibility' => $visibility,
             ]);
         }
     }
@@ -115,7 +121,7 @@ class BuildGuideController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'user_fk' => Yii::$app->user->identity->user_id]);
     }
 
     /**

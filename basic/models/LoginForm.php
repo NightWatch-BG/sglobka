@@ -27,7 +27,7 @@ class LoginForm extends Model
             // username and password are both required
             [['username', 'password'], 'required'],
 	    ['username', 'filter', 'filter' => 'trim'],
-	    ['username', 'string', 'min' => 2, 'max' => 255],
+	    ['username', 'string', 'min' => 2, 'max' => 16],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()

@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="part-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())): ?>
+    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()): ?>
         <p>
 	    <?= Html::a('Add New Part', ['/part/create/', 'role' => $model->role_fk], ['class' => 'btn btn-success']) ?>
         </p>
@@ -84,8 +84,5 @@ $this->params['breadcrumbs'][] = $this->title;
 	    <?= Html::a('Add this part to your build', ['/part/link-part/', 'build_id' => $build, 'part_id' => $model->part_id], ['class' => 'btn btn-info']) ?>
 	</p>
     <?php endif; ?>
-	
-<?php
-// var_dump($parameters);
-?>
+
 </div>

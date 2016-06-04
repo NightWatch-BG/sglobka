@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = 'User';
     <h1><?= Html::encode('Username: ' . $modelUser->username) ?></h1>
 
     <p>
-	<?php if($modelUser->user_id === Yii::$app->user->identity->user_id): ?>
+	<?php if(Yii::$app->user->identity->isCreator($modelUser->user_id)): ?>
 	    <?= Html::a('Edit user info', ['update', 'id' => $modelUser->user_id], ['class' => 'btn btn-primary']) ?>
 	    <?= Html::a('Delete', ['delete', 'id' => $modelUser->user_id], [
 		'class' => 'btn btn-danger',
@@ -63,13 +63,13 @@ $this->params['breadcrumbs'][] = 'User';
             'last_update',
         ],
         ]) ?>
-	<?php if($modelUser->id === Yii::$app->user->identity->user_id): ?>
+	<?php if(Yii::$app->user->identity->isCreator($modelUser->user_id)): ?>
 	    <p>
 		<?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
 	    </p>
 	<?php endif; ?>
     <?php else: ?>
-	<?php if($modelUser->id === Yii::$app->user->identity->user_id): ?>
+	<?php if(Yii::$app->user->identity->isCreator($modelUser->user_id)): ?>
 	    <p>
 		<?= Html::a('Add Address', ['/address/create'], ['class' => 'btn btn-success']) ?>
 	    </p>
@@ -77,8 +77,5 @@ $this->params['breadcrumbs'][] = 'User';
 	    <p><?= Html::encode('No address data') ?></p>
 	<?php endif; ?>
     <?php endif; ?>
-
-    <p>
-	<?= Html::a('See my builds', ['/build-guide/index/'], ['class' => 'btn btn-info']) ?>
-    </p>	    
+	    
 </div>

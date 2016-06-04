@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php if (Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())): ?>
+    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()): ?>
         <p>
 	    <?= Html::a('Add New CPU', ['/part/create/', 'role' => Role::CPU], ['class' => 'btn btn-success']) ?>
 	    <?= Html::a('Add New Motherboard', ['/part/create/', 'role' => Role::MOTHERBOARD], ['class' => 'btn btn-success']) ?>
@@ -53,7 +53,4 @@ $this->params['breadcrumbs'][] = $this->title;
 	],
     ]);
     ?>
- <?php  
-// echo yii\helpers\Url::to(['part/view', 'id' => 1, 'build' => 3]);
-// var_dump($build); ?>
 </div>

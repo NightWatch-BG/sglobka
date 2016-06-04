@@ -10,7 +10,6 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use app\models\Manufacturer;
 use app\models\Role;
-use app\models\Parameter;
 use app\models\Review;
 use \app\models\BuildGuide;
 
@@ -39,7 +38,7 @@ class PartController extends Controller
      * Lists all Part models.
      * @return mixed
      */
-    public function actionIndex($role_fk, $build = NULL)
+    public function actionIndex($role_fk = '', $build = NULL)
     {
         $searchModel = new PartSearch();
 	if ($role_fk != Role::ANY) {
@@ -85,7 +84,7 @@ class PartController extends Controller
      */
     public function actionCreate($role)
     {
-	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $model = new Part();
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
@@ -114,7 +113,7 @@ class PartController extends Controller
      * @return mixed
      */
     public function actionUpdate($id) {
-	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $model = $this->findModel($id);
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
@@ -143,7 +142,7 @@ class PartController extends Controller
      */
     public function actionDelete($id)
     {
-	if(Yii::$app->user->identity && (Yii::$app->user->identity->isAdmin() || Yii::$app->user->identity->isStaff())) {
+	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $this->findModel($id)->delete();
 	    return $this->redirect(['index', 'role_fk' => '']);

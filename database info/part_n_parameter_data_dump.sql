@@ -4,7 +4,7 @@
 
 INSERT INTO `part` (`part_id`, `name`, `part_number`, `model`, `manufacturer_fk`, `role_fk`, `overal_rating`, `more_info`, `price`) VALUES
 (1, 'Intel Core i7-4770K', 'BX80646I74770K ', 'Core i7-4770K ', 2, 1, '0.0', '', NULL),
-(2, 'Intel Core i5-4670K', 'BX80646I54670K ', 'Core i5-4670K ', 1, 1, '0.0', '', '399.98'),
+(2, 'Intel Core i5-4670K', 'BX80646I54670K ', 'Core i5-4670K ', 2, 1, '0.0', '', '399.98'),
 (3, 'Intel Core i7-6700K', 'BX80662I76700K ', 'Core i7-6700K ', 2, 1, '0.0', '', '339.99'),
 (4, 'Intel Core i5-6600K', 'BX80662I56600K ', 'Core i5-6600K ', 2, 1, '0.0', '', '233.99'),
 (5, 'Intel Core i5-6500', 'BX80662I56500 ', 'Core i5-6500 ', 2, 1, '0.0', '', '194.99'),
