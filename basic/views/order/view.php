@@ -6,15 +6,15 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
 
-$this->title = $model->order_id;
+$this->title = 'Order';
 $this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
+    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()): ?>
+    <!--p>
         <?= Html::a('Update', ['update', 'id' => $model->order_id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->order_id], [
             'class' => 'btn btn-danger',
@@ -23,20 +23,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
-    </p>
-
-    <?= DetailView::widget([
+    </p-->
+    <?php endif; ?>
+    <?php
+    echo DetailView::widget([
         'model' => $model,
         'attributes' => [
             'order_id',
-            'customer_fk',
-            'staff_fk',
-            'build_fk',
-            'status_fk',
+	    [
+	    'label' => 'Customer',
+	    'value' => $model->customerFk->username,
+	    ],
+            'buildFk.title',
+            'statusFk.status',
             'notes',
+            //'staff_notes',
             'date_of_order',
             'last_update',
         ],
-    ]) ?>
+    ]);
+    if($model->staff_fk){
+	echo Html::encode('Employee in charge for your order: ' . $model->staffFk->first_name . ' ' . $model->staffFk->last_name);
+    } else {
+	echo Html::encode('Your order is queued awaiting processing!');
+    }
+    ?>
 
 </div>

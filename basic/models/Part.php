@@ -193,6 +193,9 @@ class Part extends \yii\db\ActiveRecord
     }
 
 //**************************************************************************************************************************************************/
+    /**
+     * AFTER SAVE
+     */   
     public function afterSave($insert, $changedAttributes) {
 	foreach ($this->parameter_ids as $parameter_id) {
 	    if($parameter_id != 0){
@@ -218,6 +221,7 @@ class Part extends \yii\db\ActiveRecord
 	    $this->link('parameters', $parameter);
 	}
     }
+    
 //**************************************************************************************************************************************************/
     public function getParametersData($role) {
 	$parametersData = [];
@@ -272,5 +276,7 @@ class Part extends \yii\db\ActiveRecord
 	}
 	//$parametersData = array ("Sockets" => $cpuSockets, "Cores" => $cpuCores);
 	return $parametersData;
-    } 
+    }
+    
+//**************************************************************************************************************************************************/    
 } // END OF THE MODEL

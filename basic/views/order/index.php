@@ -26,15 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'order_id',
-            'customer_fk',
-            'staff_fk',
-            'build_fk',
-            'status_fk',
+            'customerFk.username',
+            //'staff_fk',
+            //'build_fk',
+            'statusFk.status',
             // 'notes',
-            // 'date_of_order',
-            // 'last_update',
+            'date_of_order',
+            'last_update',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+		'template' => '{view}{update}'],
         ],
     ]); ?>
 

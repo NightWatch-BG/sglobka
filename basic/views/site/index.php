@@ -58,7 +58,7 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 		    <p> <?= Html::encode('No PC Builds yet') ?> </p>
 		<?php endif; ?>
 		<p>
-		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::visibilityPublic], ['class' => 'btn btn-info']) ?>
+		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::VIS_PUBLIC], ['class' => 'btn btn-info']) ?>
 		</p>
 	    </div>
             <div class="col-lg-4">

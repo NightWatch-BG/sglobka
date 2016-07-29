@@ -8,10 +8,10 @@ use Yii;
  * This is the model class for table "address".
  *
  * @property integer $address_id
+ * @property integer $user_fk 
  * @property string $email
  * @property string $phone
  * @property string $address
- * @property string $address2
  * @property integer $country_fk
  * @property integer $city_fk
  * @property string $last_update
@@ -42,7 +42,7 @@ class Address extends \yii\db\ActiveRecord
             [['last_update'], 'safe'],
             [['email'], 'string', 'max' => 45],
             [['phone'], 'string', 'max' => 20],
-            [['address', 'address2'], 'string', 'max' => 100]
+            [['address'], 'string', 'max' => 100]
         ];
     }
 
@@ -57,7 +57,6 @@ class Address extends \yii\db\ActiveRecord
             'email' => 'Email',
             'phone' => 'Phone',
             'address' => 'Address',
-            'address2' => 'Address2',
             'country_fk' => 'Country',
             'city_fk' => 'City',
             'last_update' => 'Last Update',
@@ -89,11 +88,13 @@ class Address extends \yii\db\ActiveRecord
     }
     
 //**************************************************************************************************************************************************/   
+    /**
+     * BEFORE SAVE
+     */    
     public function beforeSave($insert)
     {
 	$this->validate();
 	if (parent::beforeSave($insert)) {
-	    $this->user_fk = Yii::$app->user->identity->user_id;
 	    $this->last_update = date("Y-m-d H:i:s");
 	    
 	    return true;

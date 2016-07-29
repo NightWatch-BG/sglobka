@@ -59,14 +59,18 @@ class Announcement extends \yii\db\ActiveRecord
     public function getUserFk()
     {
         return $this->hasOne(User::className(), ['user_id' => 'user_fk']);
-    }  
-//**************************************************************************************************************************************************/
+    }
     
+//**************************************************************************************************************************************************/
+    /**
+     * BEFORE SAVE
+     */
     public function beforeSave($insert)
     {
 	$this->validate();
 	if (parent::beforeSave($insert)) {
 	    $this->announcement_date = date("Y-m-d H:i:s");
+	    
 	    return true;
 	} else {
 	    return false;
@@ -80,4 +84,5 @@ class Announcement extends \yii\db\ActiveRecord
 	return $lastAnnounsment;
     }
     
+//**************************************************************************************************************************************************/    
 } // END OF THE MODEL

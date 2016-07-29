@@ -35,7 +35,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
 	['label' => 'Home', 'url' => ['/site/index']],
-	['label' => 'Builds', 'url' => ['/build-guide/index', 'visibility_fk' => \app\models\BuildGuide::visibilityPublic]],
+	['label' => 'Builds', 'url' => ['/build-guide/index', 'visibility_fk' => \app\models\BuildGuide::VIS_PUBLIC]],
 	['label' => 'Parts', 'url' => ['/part/index']],
         /*
 	* ['label' => 'About', 'url' => ['/site/about']],

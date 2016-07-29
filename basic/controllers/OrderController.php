@@ -58,15 +58,25 @@ class OrderController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate($build_id) {
         $model = new Order();
-
+	$build = $this->findBuild($build_id);
+	$parts = $build->getAddedParts();
+	$address = $this->getAddress($build->user_fk);
+	
+	$model->build_fk = $build->build_guide_id;
+	$model->customer_fk = $build->user_fk;
+	$model->status_fk = Order::STAT_PENDING;
+	$model->date_of_order = date("Y-m-d H:i:s");
+	
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->order_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+		'build' => $build,
+		'parts' => $parts,
+		'address' => $address,		
             ]);
         }
     }
@@ -114,6 +124,23 @@ class OrderController extends Controller
     {
         if (($model = Order::findOne($id)) !== null) {
             return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    protected function findBuild($build_id)
+    {
+        if (($model = \app\models\BuildGuide::findOne($build_id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    protected function getAddress($user_id)
+    {
+        if (($model = \app\models\Address::findOne(['user_fk' => $user_id])) !== null) {
+	    
+            return $model->countryFk->country .', ' . $model->cityFk->city .', ' . $model->address;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

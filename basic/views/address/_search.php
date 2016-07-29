@@ -16,16 +16,14 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'address_id') ?>
-    
-    <?= $form->field($model, 'user_fk') ?> 
+
+    <?= $form->field($model, 'user_fk') ?>
 
     <?= $form->field($model, 'email') ?>
 
     <?= $form->field($model, 'phone') ?>
 
     <?= $form->field($model, 'address') ?>
-
-    <?= $form->field($model, 'address2') ?>
 
     <?php // echo $form->field($model, 'country_fk') ?>
 

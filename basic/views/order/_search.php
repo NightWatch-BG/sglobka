@@ -27,6 +27,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'notes') ?>
 
+    <?php // echo $form->field($model, 'staff_notes') ?>
+
     <?php // echo $form->field($model, 'date_of_order') ?>
 
     <?php // echo $form->field($model, 'last_update') ?>

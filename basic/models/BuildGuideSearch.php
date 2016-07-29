@@ -18,7 +18,7 @@ class BuildGuideSearch extends BuildGuide
     public function rules()
     {
         return [
-            [['build_guide_id', 'user_fk', 'visibility_fk'], 'integer'],
+            [['build_guide_id', 'user_fk', 'visibility_fk', 'in_order'], 'integer'],
             [['title', 'guide', 'last_update'], 'safe'],
         ];
     }
@@ -58,8 +58,9 @@ class BuildGuideSearch extends BuildGuide
         $query->andFilterWhere([
             'build_guide_id' => $this->build_guide_id,
             'user_fk' => $this->user_fk,
-	    'visibility_fk' => $this->visibility_fk,
-	    'last_update' => $this->last_update,
+            'visibility_fk' => $this->visibility_fk,
+            'last_update' => $this->last_update,
+            'in_order' => $this->in_order,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

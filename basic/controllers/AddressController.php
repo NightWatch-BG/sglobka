@@ -66,6 +66,7 @@ class AddressController extends Controller
     public function actionCreate()
     {
         $model = new Address();
+	$model->user_fk = Yii::$app->user->identity->user_id;
 	$countries = ArrayHelper::map(Country::find()->all(), 'country_id', 'country');
 	$cities = ArrayHelper::map( City::find()->all(), 'city_id', 'city');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -112,7 +113,7 @@ class AddressController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['user/view', 'id' => \Yii::$app->user->identity->user_id]);
     }
 
     /**

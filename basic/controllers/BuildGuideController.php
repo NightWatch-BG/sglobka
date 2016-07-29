@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 
 /**
  * BuildGuideController implements the CRUD actions for BuildGuide model.
@@ -55,7 +56,8 @@ class BuildGuideController extends Controller
      */
     public function actionView($id) {
 	$model = $this->findModel($id);
-	$parts = $model->getAddedParts();
+	//$parts = $model->getAddedParts();
+	$parts = new ActiveDataProvider(['query' => $model->getParts(), 'sort' =>false]);
 	if (Yii::$app->user->identity && Yii::$app->user->identity->isCreator($model->user_fk)) {
 	    $haveAddress = Yii::$app->user->identity->haveAddress();
 	    return $this->render('viewForAuthor', [
@@ -65,7 +67,7 @@ class BuildGuideController extends Controller
 	    ]);
 	} else {
 	    return $this->render('view', [
-			'model' => $this->findModel($id),
+			'build' => $this->findModel($id),
 			'parts' => $parts,
 	    ]);
 	}
@@ -80,6 +82,7 @@ class BuildGuideController extends Controller
     {
         $model = new BuildGuide();
 	$model->user_fk = Yii::$app->user->identity->user_id;
+	$model->in_order = BuildGuide::NOT_ODERED;
 	$visibility = ArrayHelper::map(Visibility::find()->all(), 'visibility_id', 'visibility');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->build_guide_id]);

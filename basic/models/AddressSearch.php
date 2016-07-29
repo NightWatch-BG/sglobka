@@ -19,7 +19,7 @@ class AddressSearch extends Address
     {
         return [
             [['address_id', 'user_fk', 'country_fk', 'city_fk'], 'integer'],
-            [['email', 'phone', 'address', 'address2', 'last_update'], 'safe'],
+            [['email', 'phone', 'address', 'last_update'], 'safe'],
         ];
     }
 
@@ -57,7 +57,7 @@ class AddressSearch extends Address
 
         $query->andFilterWhere([
             'address_id' => $this->address_id,
-	    'user_fk' => $this->user_fk, 
+            'user_fk' => $this->user_fk,
             'country_fk' => $this->country_fk,
             'city_fk' => $this->city_fk,
             'last_update' => $this->last_update,
@@ -65,8 +65,7 @@ class AddressSearch extends Address
 
         $query->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'address2', $this->address2]);
+            ->andFilterWhere(['like', 'address', $this->address]);
 
         return $dataProvider;
     }

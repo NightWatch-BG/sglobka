@@ -59,7 +59,6 @@ $this->params['breadcrumbs'][] = 'User';
 	    'countryFk.country',
             'cityFk.city',
             'address',
-            'address2',
             'last_update',
         ],
         ]) ?>

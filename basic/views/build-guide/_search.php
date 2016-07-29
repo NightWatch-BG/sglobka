@@ -22,10 +22,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title') ?>
 
     <?= $form->field($model, 'guide') ?>
-    
+
     <?= $form->field($model, 'visibility_fk') ?>
-		
+
     <?php // echo $form->field($model, 'last_update') ?>
+
+    <?php // echo $form->field($model, 'in_order') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

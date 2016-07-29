@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
+
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -25,10 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'announcement_id',
             'userFk.username',
-            'title',
-            'announcement',
+	    [
+		'attribute' =>'title',
+		'value' => function($data){ return StringHelper::truncate($data->title, 30, ' ...'); }
+	    ],
+	    [
+		'attribute' =>'announcement',
+		'value' => function($data){ return StringHelper::truncate($data->announcement, 150, ' ...'); }
+	    ],
             'announcement_date',
 
             ['class' => 'yii\grid\ActionColumn','template' => '{view}'],

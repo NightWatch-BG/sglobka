@@ -12,6 +12,11 @@ use app\models\Order;
  */
 class OrderSearch extends Order
 {
+    public function attributes()
+    {
+    // add related fields to searchable attributes
+    return array_merge(parent::attributes(), ['statusFk.status', 'customerFk.username']);
+    }
     /**
      * @inheritdoc
      */
@@ -19,7 +24,7 @@ class OrderSearch extends Order
     {
         return [
             [['order_id', 'customer_fk', 'staff_fk', 'build_fk', 'status_fk'], 'integer'],
-            [['notes', 'date_of_order', 'last_update'], 'safe'],
+            [['notes', 'staff_notes', 'date_of_order', 'last_update', 'statusFk.status', 'customerFk.username'], 'safe'],
         ];
     }
 
@@ -47,6 +52,17 @@ class OrderSearch extends Order
             'query' => $query,
         ]);
 
+	$query->joinWith('statusFk AS statusFk');
+	$dataProvider->sort->attributes['statusFk.status'] = [
+	    'asc' => ['statusFk.status' => SORT_ASC],
+	    'desc' => ['statusFk.status' => SORT_DESC],
+	];
+	$query->joinWith('customerFk AS customerFk');
+	$dataProvider->sort->attributes['customerFk.username'] = [
+	    'asc' => ['customerFk.username' => SORT_ASC],
+	    'desc' => ['customerFk.username' => SORT_DESC],
+	];
+	
         $this->load($params);
 
         if (!$this->validate()) {
@@ -65,7 +81,11 @@ class OrderSearch extends Order
             'last_update' => $this->last_update,
         ]);
 
-        $query->andFilterWhere(['like', 'notes', $this->notes]);
+        $query->andFilterWhere(['like', 'notes', $this->notes])
+            ->andFilterWhere(['like', 'staff_notes', $this->staff_notes]);
+
+        $query->andFilterWhere(['like', 'statusFk.status', $this->getAttribute('statusFk.status')]);
+        $query->andFilterWhere(['like', 'customerFk.username', $this->getAttribute('customerFk.username')]);
 
         return $dataProvider;
     }

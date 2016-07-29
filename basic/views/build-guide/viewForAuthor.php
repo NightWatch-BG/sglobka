@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 use app\models\Role;
 
@@ -33,6 +34,41 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <h3><?= Html::encode('Components: ') ?></h3>
     <p>
+	<?= GridView::widget([
+	    'dataProvider' => $parts,
+	    'columns' => [
+		['class' => 'yii\grid\SerialColumn'],
+		'roleFk.role',
+		'name',
+		//'part_number',
+		//'model',
+		//'manufacturerFk.manufacturer_name',
+		'overal_rating',
+		'price',
+		['class' => 'yii\grid\ActionColumn',
+		    'template' => '{view}',
+		    'buttons' => [
+			'view' => function ($url, $model, $key) {
+			    $url = \yii\helpers\Url::toRoute(['/part/view/', 'id' => $model->part_id]);
+			    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url);
+			},
+		    ],
+		],
+		['class' => 'yii\grid\ActionColumn',
+		    'template' => '{change}',
+		    'buttons' => [		
+			'change' => function ($url, $model, $key) {
+			    // TO DO: build_id-to da e v sesiq i da se vzima ot tam, a da ne se podawa prez URL i navsqkyde kydeto se podawa da se oprawi
+			    $url = \yii\helpers\Url::toRoute(['/part/index/', 'role_fk' => $model->role_fk]);
+			    return Html::a('<span class="glyphicon glyphicon-transfer"></span>', $url);
+			}
+		    ],
+		],
+	    ],
+	]);?>
+    </p>
+ 
+    <!--p>
 	<h4><?= Html::encode('CPU: ') ?></h4>
 	<?php if (array_key_exists('CPU', $parts)): ?>
 	    <?= DetailView::widget([
@@ -143,9 +179,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php else: ?>
 	    <?= Html::a('Choose a PSU', ['/part/index', 'role_fk' => Role::PSU, 'build' => $model->build_guide_id], ['class' => 'btn btn-info']) ?>
 	<?php endif; ?>
-    </p>
+    </p-->
     <?php if (!empty($parts) && $haveAddress): ?>
-	<?= Html::a('TODO Order this build', ['/site/index/'],['class' => 'btn btn-success']) ?>	
+	<?= Html::a('Order this build', ['/order/create', 'build_id' => $model->build_guide_id],['class' => 'btn btn-success']) ?>	
     <?php endif; ?>
  <?php    
 //echo GridView::widget(['dataProvider' => $parts,]);

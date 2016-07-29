@@ -11,6 +11,7 @@ use app\models\ContactForm;
 
 use \app\models\BuildGuide;
 use \app\models\Announcement;
+use \app\models\Order;
 
 class SiteController extends Controller
 {
@@ -55,8 +56,10 @@ class SiteController extends Controller
 	if (Yii::$app->user->identity) {
 	    if (Yii::$app->user->identity->isStaff()) {
 		$lastAnnounsment = Announcement::getNewestAnnounsment();
+		$newOrderCount = Order::getNewOrders();
 		return $this->render('staffIndex', [
 			    'lastAnnounsment' => $lastAnnounsment,
+			    'newOrderCount' => $newOrderCount,
 		]);
 	    } else {
 		$myBuild = BuildGuide::getMyNewestBuild();

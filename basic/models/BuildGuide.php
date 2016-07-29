@@ -15,6 +15,7 @@ use yii\data\ActiveDataProvider;
  * @property string $guide
  * @property integer $visibility_fk
  * @property string $last_update
+ * @property integer $in_order
  *
  * @property User $userFk
  * @property Visibility $visibilityFk
@@ -23,8 +24,11 @@ use yii\data\ActiveDataProvider;
  */
 class BuildGuide extends \yii\db\ActiveRecord
 {
-    const visibilityPublic =1;
-    const visibilityPrivate = 2;
+    const VIS_PUBLIC = 1;
+    const VIS_PRIVATE = 2;
+    const ORDERED = 1;
+    const NOT_ODERED = 0;
+
     /**
      * @inheritdoc
      */
@@ -40,8 +44,8 @@ class BuildGuide extends \yii\db\ActiveRecord
     {
         return [
             [['user_fk', 'visibility_fk'], 'required'],
-            [['user_fk', 'visibility_fk'], 'integer'],
-	    [['last_update'], 'safe'], 
+            [['user_fk', 'visibility_fk', 'in_order'], 'integer'],
+            [['last_update'], 'safe'],
             [['title'], 'string', 'max' => 45],
             [['guide'], 'string', 'max' => 5000]
         ];
@@ -104,7 +108,7 @@ class BuildGuide extends \yii\db\ActiveRecord
 //**************************************************************************************************************************************************/
 
     public static function getNewestBuildGuide() {
-	$lastBuildGuide = BuildGuide::find()->where(['visibility_fk' => BuildGuide::visibilityPublic])->orderBy('last_update DESC')->one();
+	$lastBuildGuide = BuildGuide::find()->where(['visibility_fk' => BuildGuide::VIS_PUBLIC])->orderBy('last_update DESC')->one();
 	return $lastBuildGuide;
     }
     
@@ -135,12 +139,17 @@ class BuildGuide extends \yii\db\ActiveRecord
 	} }
 	return $parts;
     }
-    
+
+//**************************************************************************************************************************************************/    
+    /**
+     * BEFORE SAVE
+     */
     public function beforeSave($insert)
     {
 	$this->validate();
 	if (parent::beforeSave($insert)) {
 	    $this->last_update = date("Y-m-d H:i:s");
+	    
 	    return true;
 	} else {
 	    return false;

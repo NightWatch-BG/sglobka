@@ -109,8 +109,17 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 		    </p>
 		<?php endif; ?>
 		<p>
-		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::visibilityPublic], ['class' => 'btn btn-info']) ?>
+		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::VIS_PUBLIC], ['class' => 'btn btn-info']) ?>
 		</p>
+            </div>
+	    <div class="col-lg-4">
+                <h2>Orders</h2>
+		<h4> <?= Html::encode('Their is ' . $newOrderCount . ' new orders pending') ?> </h4>
+		    <p>
+			<?= Html::a('New Orders', ['/order/index/'], ['class' => 'btn btn-success']) ?>
+
+			<?= Html::a('All Orders', ['/order/index/', 'user_fk' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
+		    </p>
             </div>
         </div>
 
