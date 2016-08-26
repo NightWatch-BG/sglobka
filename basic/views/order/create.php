@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\grid\GridView;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -14,22 +15,46 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1>Are you sure you want to make the following order:</h1>
     <h3><?= Html::encode('Owner: ' . $build->userFk->username) ?></h3>
-    <h4><?= Html::encode('Address: ' . $address) ?></h4>
-    
+    <?= DetailView::widget([
+        'model' => $address,
+        'attributes' => [
+	    'userFk.first_name',
+	    'userFk.last_name',
+	    'email',
+	    'phone',
+	    'address',
+	    'countryFk.country',
+	    'cityFk.city'
+	],
+    ]);
+    ?>
+     <?php
+     //var_dump($build);
+     //var_dump($build2);
+ ?>
     <h3><?= Html::encode('Components: ') ?></h3>
+    
     <p>
-	<?php 
+	<?= GridView::widget([
+	    'dataProvider' => $parts,
+	    'columns' => [
+		'roleFk.role',
+		'name',
+		'part_number',
+		//'model',
+		'manufacturerFk.manufacturer_name',
+		'overal_rating',
+		'price',
+	    ],
+	]);?>
+    </p>
+    
+    <p>
+	<?php
 	$total = 0;
-	foreach ($parts as $key => $part) {
+	$partData = $parts->getModels();
+	foreach ($partData as $part) {
 	    $total += $part->price;
-	    echo '<h4>' . Html::encode($key) . '</h4>';
-	    echo DetailView::widget([
-		'model' => $part,
-		'attributes' => [
-		    'name',
-		    'price',
-		],
-		]);
 	}
 	echo '<h4>' . Html::encode('Total price: ' . $total) . '</h4>';
 	?>

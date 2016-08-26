@@ -102,13 +102,19 @@ class BuildPartController extends Controller
 
         return $this->redirect(['index']);
     }
+    
+//**************************************************************************************************************************************************/
+    //Currently not in use!!! PartController::actionLinkPart updates the part FK in the old entry
+    /*
     public function actionDeleteBuildPartLnk($part_id, $build_id, $role_fk)
     {
 	$buildPartLink = BuildPart::findOne(['part_fk' => $part_id, 'build_guide_fk' => $build_id]);
 	$buildPartLink ->delete();
         return $this->redirect(['/part/index/', 'role_fk' => $role_fk, 'build' => $build_id]);
     }
-
+    */
+//**************************************************************************************************************************************************/
+    
     /**
      * Finds the BuildPart model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -124,4 +130,5 @@ class BuildPartController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
+//**************************************************************************************************************************************************/
+} // END OF THE CONTROLLER

@@ -26,6 +26,7 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 		    <h4> <?= $lastAnnounsment->title ?> </h4>
 		    <p> <?= StringHelper::truncate($lastAnnounsment->announcement, 150, ' .........') ?></p>
 			<?php
+			//NON Yii method
 			/*
 			if (strlen($lastAnnounsment->announcement) > 150) {
 			    // truncate string
@@ -116,9 +117,9 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
                 <h2>Orders</h2>
 		<h4> <?= Html::encode('Their is ' . $newOrderCount . ' new orders pending') ?> </h4>
 		    <p>
-			<?= Html::a('New Orders', ['/order/index/'], ['class' => 'btn btn-success']) ?>
+			<?= Html::a('New Orders', ['/order/index/', 'status_fk' => 1], ['class' => 'btn btn-success']) ?>
 
-			<?= Html::a('All Orders', ['/order/index/', 'user_fk' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
+			<?= Html::a('All Orders', ['/order/index/'], ['class' => 'btn btn-info']) ?>
 		    </p>
             </div>
         </div>

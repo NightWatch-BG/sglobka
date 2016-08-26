@@ -42,23 +42,27 @@ AppAsset::register($this);
 	* ['label' => 'Contact', 'url' => ['/site/contact']],
 	*/
 	];
-	if(!Yii::$app->user->isGuest) {
-	    $menuItems[] = ['label' => 'My Builds', 'url' => ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id]];
-	}
-	if(!Yii::$app->user->isGuest && yii::$app->user->identity->isAdmin()) {
+    if(!Yii::$app->user->isGuest) {
+	if(yii::$app->user->identity->isAdmin()) {
 	    $menuItems[] = ['label' => 'All Users', 'url' => ['/user/index']];
 	}
-	if(Yii::$app->user->isGuest) {
-	    $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-	    $menuItems[] = ['label' => 'Register', 'url' => ['/user/create']];
-	} else {
-	    $menuItems[] = ['label' => 'Profile', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->user_id]];
-	    $menuItems[] = [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ];
-	}
+	if(yii::$app->user->identity->isStaff()) {
+	    $menuItems[] = ['label' => 'Orders', 'url' => ['/order/index']];
+	}  
+    }
+
+    if(Yii::$app->user->isGuest) {
+	$menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+	$menuItems[] = ['label' => 'Register', 'url' => ['/user/create']];
+    } else {
+	$menuItems[] = ['label' => 'My Builds', 'url' => ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id]];
+	$menuItems[] = ['label' => 'Profile', 'url' => ['/user/view', 'id' => \Yii::$app->user->identity->user_id]];
+	$menuItems[] = [
+		'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+		'url' => ['/site/logout'],
+		'linkOptions' => ['data-method' => 'post']
+	    ];
+    }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,

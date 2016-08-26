@@ -15,10 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Order', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,7 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'last_update',
 
             ['class' => 'yii\grid\ActionColumn',
-		'template' => '{view}{update}'],
+		'template' => '{view}'],
+            ['class' => 'yii\grid\ActionColumn',
+		'template' => '{update}',
+		'visible' => Yii::$app->user->identity->isStaff(),
+		],
         ],
     ]); ?>
 

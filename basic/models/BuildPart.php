@@ -62,4 +62,6 @@ class BuildPart extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Part::className(), ['part_id' => 'part_fk']);
     }
-}
+    
+//**************************************************************************************************************************************************/    
+} // END OF THE MODEL

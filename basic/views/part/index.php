@@ -14,7 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="part-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    Yii::$app->session->set('old_part_id', $old_part);
+    ?>
     <?php if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()): ?>
         <p>
 	    <?= Html::a('Add New CPU', ['/part/create/', 'role' => Role::CPU], ['class' => 'btn btn-success']) ?>
@@ -44,11 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
 	    [
 	    'class' => 'yii\grid\ActionColumn',
 	    'template' => '{view}',
-	    'buttons' => [
-                        'view' => function ($url, $model) use ($build) {
-                            $url .= '?build=' . $build; 
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url);
-			},],
 	    ],
 	],
     ]);

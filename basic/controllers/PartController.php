@@ -12,6 +12,7 @@ use app\models\Manufacturer;
 use app\models\Role;
 use app\models\Review;
 use \app\models\BuildGuide;
+use app\models\BuildPart;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -38,7 +39,7 @@ class PartController extends Controller
      * Lists all Part models.
      * @return mixed
      */
-    public function actionIndex($role_fk = '', $build = NULL)
+    public function actionIndex($role_fk = '', $old_part = 0)//, $build = NULL)
     {
         $searchModel = new PartSearch();
 	if ($role_fk != Role::ANY) {
@@ -49,7 +50,8 @@ class PartController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-	    'build' => $build,
+            'old_part' => $old_part,
+	    //'build' => $build,
         ]);
     }
 
@@ -58,7 +60,7 @@ class PartController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id, $build = NULL)
+    public function actionView($id)//, $build = NULL)
     {
 	$model = $this->findModel($id);
 	$parameters = new ActiveDataProvider([
@@ -66,14 +68,17 @@ class PartController extends Controller
 	    ]);
 	if (!Yii::$app->user->isGuest) {
 	    $userReview = Review::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->andWhere(['part_fk' => $model->part_id])->one();
+	    $partBuildPair = BuildPart::findOne(['part_fk' => $model['part_id'], 'build_guide_fk' => Yii::$app->session['build_id']]);
 	} else {
 	    $userReview = NULL;
+	    $partBuildPair = NULL;
 	}
         return $this->render('view', [
             'model' => $model,
 	    'parameters' => $parameters,
 	    'review' => $userReview,
-	    'build' => $build,
+	    'partBuildPair' => $partBuildPair,
+	    //'build' => $build,
         ]);
     }
 
@@ -168,13 +173,20 @@ class PartController extends Controller
         }
     }
     
-
+//**************************************************************************************************************************************************/
     public function actionLinkPart($build_id, $part_id)
     {
-	$build = BuildGuide::find()->where(['build_guide_id' => $build_id])->one();
-	$part = Part::find()->where(['part_id' => $part_id])->one();
-	$part->link('builds', $build);
+	$oldLink = BuildPart::findOne(['part_fk' => Yii::$app->session['old_part_id'], 'build_guide_fk' => $build_id]);
+	if($oldLink != NULL){
+	    $oldLink->part_fk = $part_id;
+	    $oldLink->update();
+	} else {
+	    $build = BuildGuide::find()->where(['build_guide_id' => $build_id])->one();
+	    $part = Part::find()->where(['part_id' => $part_id])->one();
+	    $part->link('builds', $build);
+	}
+
 	return $this->redirect(['/build-guide/view', 'id' => $build_id]);
     }
-    
+//**************************************************************************************************************************************************/
 } // END OF THE CONTROLLER

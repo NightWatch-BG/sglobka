@@ -63,9 +63,8 @@ $this->params['breadcrumbs'][] = 'User';
         ],
         ]) ?>
 	<?php if(Yii::$app->user->identity->isCreator($modelUser->user_id)): ?>
-	    <p>
-		<?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?>
-	    </p>
+	    <p> <?= Html::a('Edit Address', ['/address/update',  'id' => $modelAddress->address_id], ['class' => 'btn btn-primary']) ?></p>
+	    <p> <?= Html::a('My Orders', ['/order/index', 'customer_fk' => $modelUser->user_id],['class' => 'btn btn-success']) ?></p>
 	<?php endif; ?>
     <?php else: ?>
 	<?php if(Yii::$app->user->identity->isCreator($modelUser->user_id)): ?>

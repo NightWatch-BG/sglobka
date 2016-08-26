@@ -60,4 +60,12 @@ class Role extends \yii\db\ActiveRecord
         return $this->hasMany(Part::className(), ['role_fk' => 'role_id']);
     }
     
+    public static function rolesArrayBuilder() {
+	$roles = Role::find()->all();
+	$rolesIndex = [];
+	foreach ($roles as $id => $role){
+	    $rolesIndex[$role->role] = $id+1;
+	}
+	return $rolesIndex;
+    }
 } // END OF THE MODEL

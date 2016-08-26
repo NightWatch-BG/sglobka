@@ -54,6 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	'itemView' => '_parameter',
     ])
     ?>
+    <p>
+	<?= Html::a('See all reviews for this part', ['/review/index/', 'part' => $model->part_id], ['class' => 'btn btn-info']) ?>
+    </p>
     <?php if (!Yii::$app->user->isGuest): ?>
 	<h4>Your Rating / Review</h4>
 	<?php if ($review != NULL): ?>
@@ -74,15 +77,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= Html::a('Rate / Review this part', ['/review/create/', 'part' => $model->part_id], ['class' => 'btn btn-success']) ?>
 	    </p>
 	<?php endif; ?>
+	<?php if (Yii::$app->session->has('build_id') && $partBuildPair == NULL): ?>
+	    <p>
+	        <?= Html::a('Add this part to your build', ['/part/link-part/', 'build_id' => Yii::$app->session['build_id'], 'part_id' => $model->part_id], ['class' => 'btn btn-info']) ?>
+	    </p>
+	<?php endif; ?>
     <?php endif; ?>
-    <p>
-	<?= Html::a('See all reviews for this part', ['/review/index/', 'part' => $model->part_id], ['class' => 'btn btn-info']) ?>
-    </p>
     
-    <?php if (!Yii::$app->user->isGuest && $build != NULL): ?>
-	<p>
-	    <?= Html::a('Add this part to your build', ['/part/link-part/', 'build_id' => $build, 'part_id' => $model->part_id], ['class' => 'btn btn-info']) ?>
-	</p>
-    <?php endif; ?>
-
 </div>

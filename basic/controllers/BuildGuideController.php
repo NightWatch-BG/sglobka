@@ -3,9 +3,9 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Address;
 use app\models\Visibility;
 use app\models\BuildGuide;
+use app\models\Role;
 use app\models\BuildGuideSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -57,17 +57,24 @@ class BuildGuideController extends Controller
     public function actionView($id) {
 	$model = $this->findModel($id);
 	//$parts = $model->getAddedParts();
-	$parts = new ActiveDataProvider(['query' => $model->getParts(), 'sort' =>false]);
-	if (Yii::$app->user->identity && Yii::$app->user->identity->isCreator($model->user_fk)) {
+	$parts = new ActiveDataProvider(['query' => $model->getParts(), 'sort' => false, 'key' => 'role_fk']);
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isCreator($model->user_fk)) { // && !$model->in_order) {
 	    $haveAddress = Yii::$app->user->identity->haveAddress();
+	    $roles = Role::rolesArrayBuilder();
+	    if($model->in_order) {
+		Yii::$app->session->remove('build_id');
+	    } else {
+		Yii::$app->session->set('build_id', $model->build_guide_id);
+	    }
 	    return $this->render('viewForAuthor', [
-			'model' => $this->findModel($id),
+			'build' => $model,
 			'parts' => $parts,
 			'haveAddress' => $haveAddress,
+			'roles' => $roles,
 	    ]);
 	} else {
 	    return $this->render('view', [
-			'build' => $this->findModel($id),
+			'model' => $model,
 			'parts' => $parts,
 	    ]);
 	}
@@ -142,4 +149,5 @@ class BuildGuideController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
+//**************************************************************************************************************************************************/
+} // END OF THE CONTROLLER

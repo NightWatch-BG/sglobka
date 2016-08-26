@@ -123,4 +123,5 @@ class AnnouncementController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
+//**************************************************************************************************************************************************/
+} // END OF THE CONTROLLER

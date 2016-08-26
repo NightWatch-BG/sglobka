@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\BuildGuide */
@@ -17,17 +17,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3><?= Html::encode('Description: ') ?></h3>
     <p><?= Html::encode($model->guide) ?></p>
     <h3><?= Html::encode('Components: ') ?></h3>
+    
     <p>
-	<?php 
-	foreach ($parts as $key => $part) {
-	    echo '<h4>' . Html::encode($key) . '</h4>';
-	    echo DetailView::widget([
-		'model' => $part,
-		'attributes' => [
-		    'name',
+	<?= GridView::widget([
+	    'dataProvider' => $parts,
+	    'columns' => [
+		'roleFk.role',
+		'name',
+		//'part_number',
+		//'model',
+		//'manufacturerFk.manufacturer_name',
+		'overal_rating',
+		'price',
+		['class' => 'yii\grid\ActionColumn',
+		    'template' => '{view}',
+		    'buttons' => [
+			'view' => function ($url, $model, $key) {
+			    $url = \yii\helpers\Url::toRoute(['/part/view/', 'id' => $model->part_id]);
+			    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url);
+			},
+		    ],
 		],
-		]);
-	}
-	?>
+	    ],
+	]);?>
     </p>
+    
 </div>

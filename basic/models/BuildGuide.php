@@ -4,8 +4,8 @@ namespace app\models;
 
 use Yii;
 
-use app\models\Role;
-use yii\data\ActiveDataProvider;
+//use app\models\Role;
+//use yii\data\ActiveDataProvider;
 /**
  * This is the model class for table "build_guide".
  *
@@ -116,7 +116,7 @@ class BuildGuide extends \yii\db\ActiveRecord
 	$lastBuildGuide = BuildGuide::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->orderBy('last_update DESC')->one();
 	return $lastBuildGuide;
     }
-    
+    /*
     public function getAddedParts() {
 	$partsData = new ActiveDataProvider(['query' => $this->getParts(),]);
 	$parts = [];
@@ -139,7 +139,7 @@ class BuildGuide extends \yii\db\ActiveRecord
 	} }
 	return $parts;
     }
-
+    */
 //**************************************************************************************************************************************************/    
     /**
      * BEFORE SAVE
@@ -154,6 +154,14 @@ class BuildGuide extends \yii\db\ActiveRecord
 	} else {
 	    return false;
 	}
+    }
+    /**
+     * AFTER SAVE
+     */   
+    // unnecessary??? after create the controller redirects to view and session[build_id] is set
+    public function afterSave($insert, $changedAttributes) {
+	Yii::$app->session->set('build_id', $this->build_guide_id);
+	parent::afterSave($insert, $changedAttributes);
     }
     
 //**************************************************************************************************************************************************/
