@@ -7,6 +7,7 @@ use app\models\Announcement;
 use app\models\AnnouncementSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\HttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -32,13 +33,17 @@ class AnnouncementController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AnnouncementSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	    $searchModel = new AnnouncementSearch();
+	    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+	    return $this->render('index', [
+		'searchModel' => $searchModel,
+		'dataProvider' => $dataProvider,
+	    ]);
+	} else {
+	    throw new HttpException(403, 'STAFF ONLY');
+	}
     }
 
     /**
@@ -48,9 +53,13 @@ class AnnouncementController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+	if (Yii::$app->user->identity && Yii::$app->user->identitiy->isStaff()) {
+	    return $this->render('view', [
+		'model' => $this->findModel($id),
+	    ]);
+	} else {
+	    throw new HttpException(403, 'STAFF ONLY');
+	}
     }
 
     /**
@@ -59,21 +68,24 @@ class AnnouncementController extends Controller
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Announcement();
-
-        if ($model->load(Yii::$app->request->post())) {
-	    $model->setAttributes(array(
-		'user_fk' => Yii::$app->user->identity->user_id,
-		//'announcement_date' => date("Y-m-d H:i:s"),
-	    ));
-	}
-	if ($model->save()) {
-            return $this->redirect(['view', 'id' => $model->announcement_id]);
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	    $model = new Announcement();
+	    if ($model->load(Yii::$app->request->post())) {
+		$model->setAttributes(array(
+		    'user_fk' => Yii::$app->user->identity->user_id,
+		    //'announcement_date' => date("Y-m-d H:i:s"),
+		));
+	    }
+	    if ($model->save()) {
+		return $this->redirect(['view', 'id' => $model->announcement_id]);
+	    } else {
+		return $this->render('create', [
+		    'model' => $model,
+		]);
+	    }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+	    throw new HttpException(403, 'STAFF ONLY');
+	}
     }
 
     /**
@@ -84,15 +96,18 @@ class AnnouncementController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->announcement_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	    $model = $this->findModel($id);
+	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		return $this->redirect(['view', 'id' => $model->announcement_id]);
+	    } else {
+		return $this->render('update', [
+		    'model' => $model,
+		]);
+	    }
+	} else {
+	    throw new HttpException(403, 'STAFF ONLY');
+	}
     }
 
     /**
@@ -103,9 +118,13 @@ class AnnouncementController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	    $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+	    return $this->redirect(['index']);
+	} else {
+	    throw new HttpException(403, 'STAFF ONLY');
+	}
     }
 
     /**

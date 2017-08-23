@@ -89,7 +89,7 @@ class PartController extends Controller
      */
     public function actionCreate($role)
     {
-	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $model = new Part();
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
@@ -118,7 +118,7 @@ class PartController extends Controller
      * @return mixed
      */
     public function actionUpdate($id) {
-	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $model = $this->findModel($id);
 	    $manufacturers = ArrayHelper::map(Manufacturer::find()->all(), 'manufacturer_id', 'manufacturer_name');
@@ -147,7 +147,7 @@ class PartController extends Controller
      */
     public function actionDelete($id)
     {
-	if(Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
+	if (Yii::$app->user->identity && Yii::$app->user->identity->isStaff()) {
 	    
 	    $this->findModel($id)->delete();
 	    return $this->redirect(['index', 'role_fk' => '']);
@@ -177,7 +177,7 @@ class PartController extends Controller
     public function actionLinkPart($build_id, $part_id)
     {
 	$oldLink = BuildPart::findOne(['part_fk' => Yii::$app->session['old_part_id'], 'build_guide_fk' => $build_id]);
-	if($oldLink != NULL){
+	if ($oldLink != NULL){
 	    $oldLink->part_fk = $part_id;
 	    $oldLink->update();
 	} else {
