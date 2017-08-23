@@ -122,6 +122,13 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 			<?= Html::a('All Orders', ['/order/index/'], ['class' => 'btn btn-info']) ?>
 		    </p>
             </div>
+	    <div class="col-lg-4">
+                <h2>Tasks</h2>
+		    <p>
+			<?= Html::a('My Tasks', ['/task/index', 'assigned_to' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
+			<?= Html::a('All Tasks', ['/task/index'], ['class' => 'btn btn-info']) ?>
+		    </p>
+            </div>
         </div>
 
     </div>
