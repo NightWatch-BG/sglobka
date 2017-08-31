@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\BuildGuide */
@@ -41,5 +42,29 @@ $this->params['breadcrumbs'][] = $this->title;
 	    ],
 	]);?>
     </p>
-    
+	<p>
+	    <?= Html::a('See reviews', ['/guide-review/index/', 'guide_fk' => $model->build_guide_id], ['class' => 'btn btn-success']) ?>
+	</p>
+        <?php if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->isCreator($model->user_fk)): ?>
+	<h4>Your Rating / Review</h4>
+	<?php if ($review): ?>
+	    <?=
+	    DetailView::widget([
+		'model' => $review,
+		'attributes' => [
+		    'rating',
+		    'review',
+		],
+	    ])
+	    ?>
+	    <p>
+		<?= Html::a('Edit Review', ['/guide-review/update/', 'id' => $review->guide_review_id], ['class' => 'btn btn-info']) ?>
+	    </p>
+	<?php else: ?>
+	    <p>
+		<?= Html::a('Rate / Review this build', ['/guide-review/create/', 'build' => $model->build_guide_id], ['class' => 'btn btn-success']) ?>
+	    </p>
+	<?php endif; ?>
+
+    <?php endif; ?>
 </div>

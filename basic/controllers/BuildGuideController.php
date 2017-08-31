@@ -7,6 +7,7 @@ use app\models\Visibility;
 use app\models\BuildGuide;
 use app\models\Role;
 use app\models\BuildGuideSearch;
+use app\models\GuideReview;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -73,9 +74,15 @@ class BuildGuideController extends Controller
 			'roles' => $roles,
 	    ]);
 	} else {
+	    if (!Yii::$app->user->isGuest) {
+		$review = GuideReview::find()->where(['user_fk' => Yii::$app->user->identity->user_id])->andWhere(['guide_fk' => $model->build_guide_id])->one();
+	    } else {
+		$review = false;
+	    }
 	    return $this->render('view', [
 			'model' => $model,
 			'parts' => $parts,
+			'review' => $review,
 	    ]);
 	}
     }
