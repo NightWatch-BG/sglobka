@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'userFk.username',
+	    'avr_rating',
 	    [
 		'attribute' =>'title',
 		'value' => function($data){ return StringHelper::truncate($data->title, 30, ' ...'); }

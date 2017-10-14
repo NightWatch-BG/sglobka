@@ -34,10 +34,10 @@ class GuideReviewController extends Controller
      * Lists all GuideReview models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($guide_fk)
     {
         $searchModel = new GuideReviewSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $guide_fk);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -108,9 +108,11 @@ class GuideReviewController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+	$model = $this->findModel($id);
+	$guide_id = $model->guide_fk;
+	$model->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'guide_fk' => $guide_id]);
     }
 
     /**

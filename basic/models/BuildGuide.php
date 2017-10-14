@@ -16,10 +16,13 @@ use Yii;
  * @property integer $visibility_fk
  * @property string $last_update
  * @property integer $in_order
+ * @property string $avr_rating 
+ * @property integer $ratings_count 
  *
  * @property User $userFk
  * @property Visibility $visibilityFk
  * @property BuildPart[] $buildParts
+ * @property GuideReview[] $guideReviews 
  * @property Order[] $orders
  */
 class BuildGuide extends \yii\db\ActiveRecord
@@ -44,8 +47,9 @@ class BuildGuide extends \yii\db\ActiveRecord
     {
         return [
             [['user_fk', 'visibility_fk'], 'required'],
-            [['user_fk', 'visibility_fk', 'in_order'], 'integer'],
+            [['user_fk', 'visibility_fk', 'in_order', 'ratings_count'], 'integer'],
             [['last_update'], 'safe'],
+	    [['avr_rating'], 'number'], 
             [['title'], 'string', 'max' => 45],
             [['guide'], 'string', 'max' => 5000]
         ];
@@ -63,6 +67,9 @@ class BuildGuide extends \yii\db\ActiveRecord
             'guide' => 'Guide',
 	    'visibility_fk' => 'Visibility',
 	    'last_update' => 'Last Update',
+	    'in_order' => 'In Order',
+	    'avr_rating' => 'Rating',
+	    'ratings_count' => 'Ratings Count',
         ];
     }
 
@@ -88,6 +95,11 @@ class BuildGuide extends \yii\db\ActiveRecord
     public function getParts()
     {
         return $this->hasMany(Part::className(), ['part_id' => 'part_fk'])->viaTable('build_part', ['build_guide_fk' => 'build_guide_id']);
+    }
+    
+    public function getGuideReviews()
+    {
+	return $this->hasMany(GuideReview::className(), ['guide_fk' => 'build_guide_id']);
     }
 
     /**

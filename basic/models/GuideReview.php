@@ -81,4 +81,15 @@ class GuideReview extends \yii\db\ActiveRecord
 	    return false;
 	}
     }
+    
+    public function afterSave($insert, $changedAttributes) {
+	$guide = $this->getGuideFk()->one();
+	$query  = GuideReview::find()->where(['guide_fk' => $this->guide_fk]);
+	$sum = $query->sum('rating');
+	$count = $query->count();
+	$guide->avr_rating = $sum / $count;
+	$guide->ratings_count = $count;
+	$guide->update();
+	parent::afterSave($insert, $changedAttributes);
+    }
 }

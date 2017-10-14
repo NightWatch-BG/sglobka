@@ -20,35 +20,22 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 
         <div class="row">
 	    
-            <div class="col-lg-4">
-                <h2>Newest Announcement</h2>
-		<?php if ($lastAnnounsment): ?>
-		    <h4> <?= $lastAnnounsment->title ?> </h4>
-		    <p> <?= StringHelper::truncate($lastAnnounsment->announcement, 150, ' .........') ?></p>
-			<?php
-			//NON Yii method
-			/*
-			if (strlen($lastAnnounsment->announcement) > 150) {
-			    // truncate string
-			    $stringCut = substr($lastAnnounsment->announcement, 0, 150);
-			    // make sure it ends in a word so assassinate doesn't become ass...
-			    $announcement = substr($stringCut, 0, strrpos($stringCut, ' ')) . ' .........';
-			    echo '<p>' . $announcement . '</p>';
-			} else {
-			    echo '<p>' . $lastAnnounsment->announcement . '</p>';
-			}
-			*/
-			?>
-		    <p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
+	    <div class="col-lg-4">
+                <h2>Build your custom PC</h2>
+		<?php if (!Yii::$app->user->isGuest): ?>
 		    <p>
-			<?= Html::a('See this announcements', ['announcement/view', 'id' => $lastAnnounsment->announcement_id], ['class' => 'btn btn-info']) ?>
+			<?= Html::a('New PC Build', ['/build-guide/create/'], ['class' => 'btn btn-success']) ?>
+		    </p>
+		    <p>
+			<?= Html::a('My builds', ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
 		    </p>
 		<?php else: ?>
-		    <p> <?= Html::encode('No announcements yet') ?> </p>
+		    <p>
+			<?= Html::encode('Login to start building!') ?>
+		    </p>
 		<?php endif; ?>
-                <p>
-		    <?= Html::a('Add Announcement', ['/announcement/create'], ['class' => 'btn btn-success']) ?>
-		    <?= Html::a('All Announcement', ['/announcement/index'], ['class' => 'btn btn-info']) ?>
+		<p>
+		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::VIS_PUBLIC], ['class' => 'btn btn-info']) ?>
 		</p>
             </div>
 	    
@@ -94,23 +81,36 @@ $this->title = 'Sglobka - Custom Personal Computer Systems';
 		    <?= Html::a('All Parts', ['/part/index', 'role_fk' => ''], ['class' => 'btn btn-info']) ?>
 		</p>
             </div>
-	    
+    
 	    <div class="col-lg-4">
-                <h2>Build your custom PC</h2>
-		<?php if (!Yii::$app->user->isGuest): ?>
+                <h2>Newest Announcement</h2>
+		<?php if ($lastAnnounsment): ?>
+		    <h4> <?= $lastAnnounsment->title ?> </h4>
+		    <p> <?= StringHelper::truncate($lastAnnounsment->announcement, 150, ' .........') ?></p>
+			<?php
+			//NON Yii method
+			/*
+			if (strlen($lastAnnounsment->announcement) > 150) {
+			    // truncate string
+			    $stringCut = substr($lastAnnounsment->announcement, 0, 150);
+			    // make sure it ends in a word so assassinate doesn't become ass...
+			    $announcement = substr($stringCut, 0, strrpos($stringCut, ' ')) . ' .........';
+			    echo '<p>' . $announcement . '</p>';
+			} else {
+			    echo '<p>' . $lastAnnounsment->announcement . '</p>';
+			}
+			*/
+			?>
+		    <p> Author: <?= $lastAnnounsment->userFk->username ?> --- Date: <?= $lastAnnounsment->announcement_date ?> </p>
 		    <p>
-			<?= Html::a('New PC Build', ['/build-guide/create/'], ['class' => 'btn btn-success']) ?>
-		    </p>
-		    <p>
-			<?= Html::a('My builds', ['/build-guide/index/', 'user_fk' => Yii::$app->user->identity->user_id], ['class' => 'btn btn-info']) ?>
+			<?= Html::a('See this announcements', ['announcement/view', 'id' => $lastAnnounsment->announcement_id], ['class' => 'btn btn-info']) ?>
 		    </p>
 		<?php else: ?>
-		    <p>
-			<?= Html::encode('Login to start building!') ?>
-		    </p>
+		    <p> <?= Html::encode('No announcements yet') ?> </p>
 		<?php endif; ?>
-		<p>
-		    <?= Html::a('Browse all Build Guides', ['/build-guide/index/', 'visibility_fk' => BuildGuide::VIS_PUBLIC], ['class' => 'btn btn-info']) ?>
+                <p>
+		    <?= Html::a('Add Announcement', ['/announcement/create'], ['class' => 'btn btn-success']) ?>
+		    <?= Html::a('All Announcement', ['/announcement/index'], ['class' => 'btn btn-info']) ?>
 		</p>
             </div>
 	    <div class="col-lg-4">

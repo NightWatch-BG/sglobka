@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -20,9 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'guide_fk',
             'userFk.username',
             'rating',
-            'review',
+	    [
+		'attribute' =>'review',
+		'value' => function($data){ return StringHelper::truncate($data->review, 200, ' ...'); }
+	    ],
+	    ['class' => 'yii\grid\ActionColumn',
+		'template' => '{view}',],
         ],
     ]); ?>
 </div>

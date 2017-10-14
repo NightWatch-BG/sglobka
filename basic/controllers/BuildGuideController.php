@@ -56,7 +56,7 @@ class BuildGuideController extends Controller
      * @return mixed
      */
     public function actionView($id) {
-	$model = $this->findModel($id);
+	$model = $this->findModel($id); 
 	//$parts = $model->getAddedParts();
 	$parts = new ActiveDataProvider(['query' => $model->getParts(), 'sort' => false, 'key' => 'role_fk']);
 	if (Yii::$app->user->identity && Yii::$app->user->identity->isCreator($model->user_fk)) { // && !$model->in_order) {
@@ -97,6 +97,8 @@ class BuildGuideController extends Controller
         $model = new BuildGuide();
 	$model->user_fk = Yii::$app->user->identity->user_id;
 	$model->in_order = BuildGuide::NOT_ODERED;
+	$model->avr_rating = 0;
+	$model->ratings_count = BuildGuide::NOT_ODERED;
 	$visibility = ArrayHelper::map(Visibility::find()->all(), 'visibility_id', 'visibility');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->build_guide_id]);

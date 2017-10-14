@@ -7,7 +7,8 @@ use yii\helpers\Html;
 /* @var $model app\models\GuideReview */
 
 $this->title = 'Create Guide Review';
-$this->params['breadcrumbs'][] = ['label' => 'Guide Reviews', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Guides', 'url' => ['build-guide/index', 'visibility_fk' => 1]];
+$this->params['breadcrumbs'][] = ['label' => 'Guide Reviews', 'url' => ['index', 'guide_fk' => $model->guide_fk]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="guide-review-create">

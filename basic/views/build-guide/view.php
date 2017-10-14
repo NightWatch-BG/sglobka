@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <p><?= Html::encode('Author: ' . $model->userFk->username) ?></p>
+    <p><?= Html::encode('Rating: '. $model->avr_rating .'('. $model->ratings_count .')') ?></p>
     <h3><?= Html::encode('Description: ') ?></h3>
     <p><?= Html::encode($model->guide) ?></p>
     <h3><?= Html::encode('Components: ') ?></h3>
